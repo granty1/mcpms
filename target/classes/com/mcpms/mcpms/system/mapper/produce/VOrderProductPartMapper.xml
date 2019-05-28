@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.produce.VOrderProductPartMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.produce.VOrderProductPart" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_product_id" property="orderProductId" jdbcType="BIGINT" />
+    <result column="part_id" property="partId" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="part_name" property="partName" jdbcType="VARCHAR" />
+    <result column="drawing_num" property="drawingNum" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="part_num" property="partNum" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_product_id, part_id, num, part_name, drawing_num, unit, remarks, order_num, 
+    part_num, product_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderProductPartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_order_product_part
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderProductPartExample" >
+    delete from v_order_product_part
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderProductPart" >
+    insert into v_order_product_part (id, order_product_id, part_id, 
+      num, part_name, drawing_num, 
+      unit, remarks, order_num, 
+      part_num, product_id)
+    values (#{id,jdbcType=BIGINT}, #{orderProductId,jdbcType=BIGINT}, #{partId,jdbcType=BIGINT}, 
+      #{num,jdbcType=INTEGER}, #{partName,jdbcType=VARCHAR}, #{drawingNum,jdbcType=VARCHAR}, 
+      #{unit,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR}, 
+      #{partNum,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderProductPart" >
+    insert into v_order_product_part
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderProductId != null" >
+        order_product_id,
+      </if>
+      <if test="partId != null" >
+        part_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="partName != null" >
+        part_name,
+      </if>
+      <if test="drawingNum != null" >
+        drawing_num,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="partNum != null" >
+        part_num,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderProductId != null" >
+        #{orderProductId,jdbcType=BIGINT},
+      </if>
+      <if test="partId != null" >
+        #{partId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="partName != null" >
+        #{partName,jdbcType=VARCHAR},
+      </if>
+      <if test="drawingNum != null" >
+        #{drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="partNum != null" >
+        #{partNum,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderProductPartExample" resultType="java.lang.Integer" >
+    select count(*) from v_order_product_part
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update v_order_product_part
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderProductId != null" >
+        order_product_id = #{record.orderProductId,jdbcType=BIGINT},
+      </if>
+      <if test="record.partId != null" >
+        part_id = #{record.partId,jdbcType=BIGINT},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.partName != null" >
+        part_name = #{record.partName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drawingNum != null" >
+        drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partNum != null" >
+        part_num = #{record.partNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update v_order_product_part
+    set id = #{record.id,jdbcType=BIGINT},
+      order_product_id = #{record.orderProductId,jdbcType=BIGINT},
+      part_id = #{record.partId,jdbcType=BIGINT},
+      num = #{record.num,jdbcType=INTEGER},
+      part_name = #{record.partName,jdbcType=VARCHAR},
+      drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      order_num = #{record.orderNum,jdbcType=VARCHAR},
+      part_num = #{record.partNum,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

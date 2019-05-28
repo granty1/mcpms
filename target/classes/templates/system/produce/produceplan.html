@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>生产管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">-->
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+    <link href="../../css/secondmodal.css" rel="stylesheet">
+    <style type="text/css">
+        #secondmodal {
+            width: 25%;
+            height: 26%;
+        }
+
+        #processEdit {
+            width: 40%;
+            height: fit-content;
+        }
+
+        .currentProcess {
+            color: #FF6699;
+            font-weight: bold;
+        }
+
+        .warningStyle {
+            background-color: #FFDDDD;
+        }
+    </style>
+    <style type="text/css">
+        .style {
+            width: 700px;
+            margin: auto;
+            font-size: 18px;
+            color: cadetblue;
+        }
+
+        .tooltip {
+            font-size: 12px;
+            font-family: \5b8b\4f53;
+            line-height: 1.5;
+            position: absolute;
+            padding: 5px;
+            z-index: 100003;
+            opacity: .8
+        }
+
+        .tipsy-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            line-height: 0;
+            border: 6px dashed #000;
+            top: 0;
+            left: 20%;
+            margin-left: -5px;
+            border-bottom-style: solid;
+            border-top: 0;
+            border-left-color: transparent;
+            border-right-color: transparent
+        }
+
+        .tipsy-arrow-n {
+            border-bottom-color: #000;
+        }
+
+        .tipsy-inner {
+            background-color: #000;
+            color: #fff;
+            max-width: 200px;
+            padding: 5px 8px 4px 8px;
+            text-align: center;
+            border-radius: 3px
+        }
+
+        .self-input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: transparent;
+            outline: none;
+            height: 28px;
+        }
+    </style>
+
+</head>
+<body ng-app="mcpms" ng-controller="ProducePlanController" ng-init="initData()">
+
+<!-- container start -->
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form" style="float: right;">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            生产批次号：<input ng-model="search.runNum" type="text"/>
+                        </li>
+                        <li>
+                            零件名称：<input ng-model="search.partName" type="text"/>
+                        </li>
+                        <li>
+                            存货编码：<input ng-model="search.partNum" type="text"/>
+                        </li>
+                        <li>
+                            创建月份：<input ng-model="search.createTime" id="searchTime" type="text"/>
+                        </li>
+                        <li>
+                            状态：<select ng-model="search.planStatus">
+                            <option value=""></option>
+                            <option value="11">未开始</option>
+                            <option value="12">执行</option>
+                            <option value="13">完成</option>
+                        </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadProducePlanList()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" ng-click="empty()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#insertOrder">
+                        <i class="fa fa-plus"></i> 委外加工
+                    </a>
+                    <a class="btn btn-default" ng-click="reloadProducePlanList()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </a>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>生产批次号</th>
+                        <th>存货编码</th>
+                        <th>零件名称</th>
+                        <th>零件图号</th>
+                        <th>规格型号</th>
+                        <th>计划量</th>
+                        <th>单位</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>计划完成时间</th>
+                        <th>实际完成时间</th>
+                        <th>当前工序</th>
+                        <th>状态</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr title="计划创建日期：{{plan.createTime | date:'yyyy年MM月dd日 HH时mm分'}}"
+                        ng-repeat="plan in producePlanList" ng-class="{warningStyle:plan.isWarning!=0}">
+                        <td ng-bind="plan.runNum"></td>
+                        <td ng-bind="plan.partNum"></td>
+                        <td ng-bind="plan.partName"></td>
+                        <td ng-bind="plan.drawingNum"></td>
+                        <td ng-bind="plan.specType"></td>
+                        <td ng-bind="plan.num"></td>
+                        <td ng-bind="plan.unit"></td>
+                        <td ng-bind="plan.price"></td>
+                        <td>{{plan.num * plan.price}}</td>
+                        <td ng-bind="plan.planFinishTime"></td>
+                        <td ng-bind="plan.actualFinishTime"></td>
+                        <td>
+                            <span ng-if="plan.currentProcessId==218" class="layui-badge layui-bg-gray"
+                                  ng-bind="plan.currentProcessName"></span>
+                            <span ng-if="plan.currentProcessId!=218 && plan.currentProcessId!=219" class="layui-badge"
+                                  ng-bind="plan.currentProcessName"></span>
+                            <span ng-if="plan.currentProcessId==219" class="layui-badge layui-bg-green"
+                                  ng-bind="plan.currentProcessName"></span>
+                        </td>
+                        <td>
+                            <span ng-if="plan.planStatus==11" class="layui-badge layui-bg-gray"
+                                  ng-bind="plan.statusName"></span>
+                            <span ng-if="plan.planStatus==12" class="layui-badge layui-bg-blue"
+                                  ng-bind="plan.statusName"></span>
+                            <span ng-if="plan.planStatus==13" class="layui-badge layui-bg-green"
+                                  ng-bind="plan.statusName"></span>
+                        </td>
+                        <td style="max-width: 150px"><a class="mytittle" title="{{plan.remarks}}">{{plan.remarks |
+                            RemarkFilter}}</a></td>
+                        <td>
+                            <button class="btn btn-success btn-xs" data-target="#viewProcess" data-toggle="modal"
+                                    ng-click="updateCurrentPlan(plan)">工序编辑
+                            </button>
+                            <button ng-if="plan.planStatus!=13" class="btn btn-primary btn-xs"
+                                    ng-click="findone(plan.id)">编辑
+                            </button>
+                            <button ng-if="plan.planStatus!=13" type="button"
+                                    class="layui-btn layui-btn-xs layui-btn-warm" ng-click="preCircule(plan.id)">流转
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="producePlanPagination"></tm-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- container end -->
+
+
+<!-- 插单第一步 批量添加零件  开始 -->
+<div id="insertOrder" class="modal container fade secondmodal" tabindex="-1"
+     style="display: none;overflow:scroll !important;overflow-x:hidden !important;max-height: 700px;width: 80%">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">选择零件</h4>
+    </div>
+    <div class="modal-body">
+        <div class="select-list">
+            <ul style="float: right;">
+                <li>
+                    零件名称：<input type="text" ng-model="part.name"/>
+                </li>
+                <li>
+                    存货编码：<input type="text" ng-model="part.partNum"/>
+                </li>
+                <li>
+                    <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadPartsList()"><i
+                            class="fa fa-search"></i>&nbsp;搜索</a>
+                    <a class="btn btn-warning btn-rounded btn-sm" ng-click="part={}"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                </li>
+            </ul>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th></th>
+                <th>存货编码</th>
+                <th>零件名称</th>
+                <th>零件图号</th>
+                <th>规格型号</th>
+                <th>单位</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="parts in partList">
+                <td><img style="cursor: pointer" ng-click="updateSelection($event,parts)" src="../img/添加.png" width="20"
+                         height="20"/></td>
+                <td ng-bind="parts.partNum"></td>
+                <td ng-bind="parts.name"></td>
+                <td ng-bind="parts.drawingNum"></td>
+                <td ng-bind="parts.specType"></td>
+                <td ng-bind="parts.unit"></td>
+                <td ng-bind="parts.remarks"></td>
+            </tr>
+            </tbody>
+        </table>
+        <tm-pagination conf="partsPaginationConf"></tm-pagination>
+        <hr>
+        <div style="width:100%;height: auto" class="modal-body">
+            <div ng-if="choosedParts.length!=0" align="center" class="col-md-12">
+                <span>生产批次号</span>
+                <input class="self-input" ng-model="entity.num" placeholder="默认:年月日时分秒"/>
+            </div>
+            <br><br><br>
+            <hr>
+            <div class="col-md-3" ng-if="choosedParts.length!=0" ng-repeat="choose in choosedParts"
+                 style="height: 52px;">
+                <a class="col-md-5" ng-bind="choose.name"></a>
+                <input class="col-md-4 self-input" type="number" ng-model="choose.num"/>
+                <a href="#" class="col-md-3" ng-click="deleteChoosed(choose)" style="color: #FF3300;">删除</a>
+            </div>
+            <div ng-if="choosedParts.length==0">
+                <a style="">还未选择零件</a>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="layui-btn layui-btn-primary" ng-click="closeInsertOrder()">关闭</button>
+        <button type="button" class="layui-btn" ng-click="inserOrderNext()">建立生产计划</button>
+    </div>
+</div>
+<!-- 插单第一步 批量添加零件 结束 -->
+
+<!-- 工序查看模态框 开始 -->
+<div class="modal fade" id="viewProcess" tabindex="-1" role="dialog" aria-labelledby="viewProcess" aria-hidden="true">
+    <div class="modal-dialog" style="width: 95%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">工序查看</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" width="800px">
+                    <tr>
+                        <td>零件名称</td>
+                        <td><a href="#" ng-bind="currentPlan.partName"></a></td>
+                    </tr>
+                </table>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>执行顺序</th>
+                        <th>工序名称</th>
+                        <th>加工方式</th>
+                        <th>外协单位</th>
+                        <th>加工图号</th>
+                        <th>外转时间</th>
+                        <th>计划完成时间</th>
+                        <th>实际完成时间</th>
+                        <th>加工天数</th>
+                        <th>数量</th>
+                        <th>单位</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>备注</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-class="{currentProcess:process.planProcessStatus==12}" ng-repeat="process in processList">
+                        <td ng-bind="process.doSort"></td>
+                        <td ng-bind="process.processName"></td>
+                        <td ng-bind="process.way"></td>
+                        <td ng-bind="process.outName"></td>
+                        <td ng-bind="process.partDrawingNum"></td>
+                        <td ng-bind="process.turnOutTime"></td>
+                        <td ng-bind="process.planFinishTime"></td>
+                        <td ng-bind="process.actualFinishTime"></td>
+                        <td ng-bind="process.days"></td>
+                        <td ng-bind="process.num"></td>
+                        <td ng-bind="process.unit"></td>
+                        <td ng-bind="process.price"></td>
+                        <td>{{process.num * process.price}}</td>
+                        <td ng-bind="process.remarks"></td>
+                        <td>
+                            <span ng-if="process.planProcessStatus==11" class="layui-badge layui-bg-gray"
+                                  ng-bind="process.statusName"></span>
+                            <span ng-if="process.planProcessStatus==12" class="layui-badge layui-bg-blue"
+                                  ng-bind="process.statusName"></span>
+                            <span ng-if="process.planProcessStatus==13" class="layui-badge layui-bg-green"
+                                  ng-bind="process.statusName"></span>
+                        </td>
+                        <td>
+                            <button ng-if="process.planProcessStatus!=13" class="btn btn-primary btn-xs"
+                                    ng-click="openProcessModal(process.id)">修改
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal"
+                        ng-click="currentParts={};">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 工序查看模态框 结束 -->
+
+
+<!-- 生产计划工序编辑 开始 -->
+<div class="modal fade" id="editNum" tabindex="-1" role="dialog" aria-labelledby="editNum" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="editNumLabel">工序修改</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table ">
+                    <tr>
+                        <td>加工方式</td>
+                        <td>
+                            <select class="form-control" ng-model="process.processModeId">
+                                <option value="{{mode.id}}" ng-repeat="mode in modeData" ng-bind="mode.way"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>外协单位</td>
+                        <td>
+                            <select class="form-control" ng-model="process.outId">
+                                <option value="{{out.id}}" ng-repeat="out in outData" ng-bind="out.name"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>加工图号</td>
+                        <td><input type="text" placeholder="加工图号" class="form-control"
+                                   ng-model="process.partDrawingNum"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>单价</td>
+                        <td><input type="number" placeholder="单价" class="form-control" ng-model="process.price"/></td>
+                    </tr>
+                    <tr>
+                        <td>计划完成时间</td>
+                        <td><input type="text" placeholder="请选择" class="form-control" id="processPlanTime"/></td>
+                    </tr>
+                    <tr>
+                        <td>备注</td>
+                        <td>
+                            <textarea class="form-control" ng-model="process.remarks"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="process={}">
+                    关闭
+                </button>
+                <button type="button" class="layui-btn" ng-click="saveProcess()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 生产计划编辑 结束 -->
+
+
+<!-- 生产计划编辑 开始 -->
+<div id="processEdit" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">生产计划编辑</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table ">
+            <tr>
+                <td>流水号</td>
+                <td><input type="text" placeholder="流水号" class="form-control" ng-model="plan.runNum"/></td>
+            </tr>
+            <tr>
+                <td>计划量</td>
+                <td><input type="number" placeholder="计划量" class="form-control" ng-model="plan.num"/></td>
+            </tr>
+            <tr>
+                <td>计划完成时间</td>
+                <td><input type="text" placeholder="请选择" class="form-control" id="planFinishTime"/></td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td><textarea class="form-control" ng-model="plan.remarks"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click=" $('#planFinishTime').val('')">关闭</button>
+        <button type="button" class="layui-btn" ng-click="save()">保存</button>
+    </div>
+</div>
+<!-- 生产计划编辑 结束 -->
+
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/jquery-ui-1.10.4.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../pagination/pagination.js"></script>
+<script src="../../js/angularjs/app_pagination.js"></script>
+<script src="../../js/angularjs/filter/produce/RemarkFilter.js"></script>
+<script src="../../js/angularjs/service/system/produce/ProducePlanService.js"></script>
+<script src="../../js/angularjs/service/system/base/BasePartsService.js"></script>
+<script src="../../js/angularjs/controller/system/produce/ProducePlanController.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $('#insertOrder').draggable()
+        $('#viewProcess').draggable()
+        $('#editNum').draggable()
+        $('#processEdit').draggable()
+    })
+
+
+    $('body').on("mouseover", ".mytittle", function (e) {
+
+        this.myTitle = this.title;
+        this.title = "";
+        var tooltip =
+            "<div class='tooltip'><div class='tipsy-inner'>" + this.myTitle +
+            "</div></div>";
+        $('body').append(tooltip);
+        $('.tooltip').css({
+            "top": (e.pageY + 20) + "px",
+            "left": (e.pageX - 20) + "px"
+        }).show('fast');
+
+    });
+    $('body').on("mouseout", ".mytittle", function (e) {
+
+        $('.tooltip').remove();
+
+    });
+    $('body').on("mousemove", ".mytittle", function (e) {
+        $('.tooltip').css({
+            "top": (e.pageY + 20) + "px",
+            "left": (e.pageX - 20) + "px"
+        });
+    });
+    //自定义提示
+    var sweetTitles = {
+        x: 10,
+        y: 20,
+        tipElements: "a,span,img,div,tr",
+        noTitle: false,
+        init: function () {
+            var noTitle = this.noTitle;
+            $(this.tipElements).each(function () {
+                var own = $(this);
+
+                $('body').on("mouseover", ".mytittle", function (e) {
+                    if (noTitle) {
+                        isTitle = true;
+                    } else {
+                        isTitle = $.trim(this.title) != '';
+                    }
+                    if (isTitle) {
+                        this.myTitle = this.title;
+                        this.title = "";
+                        var tooltip =
+                            "<div class='tooltip'><div class='tipsy-inner'>" + this.myTitle +
+                            "</div></div>";
+                        $('body').append(tooltip);
+                        $('.tooltip').css({
+                            "top": (e.pageY + 20) + "px",
+                            "left": (e.pageX - 20) + "px"
+                        }).show('fast');
+                    }
+                });
+                $('body').on("mouseout", ".mytittle", function (e) {
+                    if (this.myTitle != null) {
+                        this.title = this.myTitle;
+                        $('.tooltip').remove();
+                    }
+                });
+                $('body').on("mousemove", ".mytittle", function (e) {
+                    $('.tooltip').css({
+                        "top": (e.pageY + 20) + "px",
+                        "left": (e.pageX - 20) + "px"
+                    });
+                });
+
+                /*$(this).mouseover(function (e) {
+
+                }).mouseout(function () {
+
+                }).mousemove(function (e) {
+
+                });*/
+            });
+        }
+    };
+    $(function () {
+        sweetTitles.init();
+    });
+
+
+</script>
+</body>
+</html>

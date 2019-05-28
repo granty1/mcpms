@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.newplan.mapper.produce.VPartPlanProcessMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.newplan.pojo.produce.VPartPlanProcess" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="part_plan_id" property="partPlanId" jdbcType="BIGINT" />
+    <result column="part_process_id" property="partProcessId" jdbcType="BIGINT" />
+    <result column="process_mode_id" property="processModeId" jdbcType="BIGINT" />
+    <result column="part_drawing_num" property="partDrawingNum" jdbcType="VARCHAR" />
+    <result column="turn_out_time" property="turnOutTime" jdbcType="VARCHAR" />
+    <result column="plan_finish_time" property="planFinishTime" jdbcType="VARCHAR" />
+    <result column="actual_finish_time" property="actualFinishTime" jdbcType="VARCHAR" />
+    <result column="days" property="days" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="out_id" property="outId" jdbcType="BIGINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="plan_process_status" property="planProcessStatus" jdbcType="BIGINT" />
+    <result column="do_sort" property="doSort" jdbcType="INTEGER" />
+    <result column="process_id" property="processId" jdbcType="BIGINT" />
+    <result column="way" property="way" jdbcType="VARCHAR" />
+    <result column="out_name" property="outName" jdbcType="VARCHAR" />
+    <result column="status_name" property="statusName" jdbcType="VARCHAR" />
+    <result column="process_name" property="processName" jdbcType="VARCHAR" />
+    <result column="part_num" property="partNum" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="spec_type" property="specType" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, part_plan_id, part_process_id, process_mode_id, part_drawing_num, turn_out_time, 
+    plan_finish_time, actual_finish_time, days, price, out_id, remarks, plan_process_status, 
+    do_sort, process_id, way, out_name, status_name, process_name, part_num, unit, spec_type, 
+    num
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.newplan.pojo.produce.VPartPlanProcessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_part_plan_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.newplan.pojo.produce.VPartPlanProcessExample" >
+    delete from v_part_plan_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.newplan.pojo.produce.VPartPlanProcess" >
+    insert into v_part_plan_process (id, part_plan_id, part_process_id, 
+      process_mode_id, part_drawing_num, turn_out_time, 
+      plan_finish_time, actual_finish_time, days, 
+      price, out_id, remarks, 
+      plan_process_status, do_sort, process_id, 
+      way, out_name, status_name, 
+      process_name, part_num, unit, 
+      spec_type, num)
+    values (#{id,jdbcType=BIGINT}, #{partPlanId,jdbcType=BIGINT}, #{partProcessId,jdbcType=BIGINT}, 
+      #{processModeId,jdbcType=BIGINT}, #{partDrawingNum,jdbcType=VARCHAR}, #{turnOutTime,jdbcType=VARCHAR}, 
+      #{planFinishTime,jdbcType=VARCHAR}, #{actualFinishTime,jdbcType=VARCHAR}, #{days,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{outId,jdbcType=BIGINT}, #{remarks,jdbcType=VARCHAR}, 
+      #{planProcessStatus,jdbcType=BIGINT}, #{doSort,jdbcType=INTEGER}, #{processId,jdbcType=BIGINT}, 
+      #{way,jdbcType=VARCHAR}, #{outName,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, 
+      #{processName,jdbcType=VARCHAR}, #{partNum,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
+      #{specType,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.newplan.pojo.produce.VPartPlanProcess" >
+    insert into v_part_plan_process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="partPlanId != null" >
+        part_plan_id,
+      </if>
+      <if test="partProcessId != null" >
+        part_process_id,
+      </if>
+      <if test="processModeId != null" >
+        process_mode_id,
+      </if>
+      <if test="partDrawingNum != null" >
+        part_drawing_num,
+      </if>
+      <if test="turnOutTime != null" >
+        turn_out_time,
+      </if>
+      <if test="planFinishTime != null" >
+        plan_finish_time,
+      </if>
+      <if test="actualFinishTime != null" >
+        actual_finish_time,
+      </if>
+      <if test="days != null" >
+        days,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="outId != null" >
+        out_id,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="planProcessStatus != null" >
+        plan_process_status,
+      </if>
+      <if test="doSort != null" >
+        do_sort,
+      </if>
+      <if test="processId != null" >
+        process_id,
+      </if>
+      <if test="way != null" >
+        way,
+      </if>
+      <if test="outName != null" >
+        out_name,
+      </if>
+      <if test="statusName != null" >
+        status_name,
+      </if>
+      <if test="processName != null" >
+        process_name,
+      </if>
+      <if test="partNum != null" >
+        part_num,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="specType != null" >
+        spec_type,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="partPlanId != null" >
+        #{partPlanId,jdbcType=BIGINT},
+      </if>
+      <if test="partProcessId != null" >
+        #{partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="processModeId != null" >
+        #{processModeId,jdbcType=BIGINT},
+      </if>
+      <if test="partDrawingNum != null" >
+        #{partDrawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="turnOutTime != null" >
+        #{turnOutTime,jdbcType=VARCHAR},
+      </if>
+      <if test="planFinishTime != null" >
+        #{planFinishTime,jdbcType=VARCHAR},
+      </if>
+      <if test="actualFinishTime != null" >
+        #{actualFinishTime,jdbcType=VARCHAR},
+      </if>
+      <if test="days != null" >
+        #{days,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="outId != null" >
+        #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="planProcessStatus != null" >
+        #{planProcessStatus,jdbcType=BIGINT},
+      </if>
+      <if test="doSort != null" >
+        #{doSort,jdbcType=INTEGER},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=BIGINT},
+      </if>
+      <if test="way != null" >
+        #{way,jdbcType=VARCHAR},
+      </if>
+      <if test="outName != null" >
+        #{outName,jdbcType=VARCHAR},
+      </if>
+      <if test="statusName != null" >
+        #{statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="processName != null" >
+        #{processName,jdbcType=VARCHAR},
+      </if>
+      <if test="partNum != null" >
+        #{partNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="specType != null" >
+        #{specType,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.newplan.pojo.produce.VPartPlanProcessExample" resultType="java.lang.Integer" >
+    select count(*) from v_part_plan_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update v_part_plan_process
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.partPlanId != null" >
+        part_plan_id = #{record.partPlanId,jdbcType=BIGINT},
+      </if>
+      <if test="record.partProcessId != null" >
+        part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.processModeId != null" >
+        process_mode_id = #{record.processModeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.partDrawingNum != null" >
+        part_drawing_num = #{record.partDrawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.turnOutTime != null" >
+        turn_out_time = #{record.turnOutTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planFinishTime != null" >
+        plan_finish_time = #{record.planFinishTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actualFinishTime != null" >
+        actual_finish_time = #{record.actualFinishTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.days != null" >
+        days = #{record.days,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.outId != null" >
+        out_id = #{record.outId,jdbcType=BIGINT},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planProcessStatus != null" >
+        plan_process_status = #{record.planProcessStatus,jdbcType=BIGINT},
+      </if>
+      <if test="record.doSort != null" >
+        do_sort = #{record.doSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.processId != null" >
+        process_id = #{record.processId,jdbcType=BIGINT},
+      </if>
+      <if test="record.way != null" >
+        way = #{record.way,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outName != null" >
+        out_name = #{record.outName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statusName != null" >
+        status_name = #{record.statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processName != null" >
+        process_name = #{record.processName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partNum != null" >
+        part_num = #{record.partNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specType != null" >
+        spec_type = #{record.specType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update v_part_plan_process
+    set id = #{record.id,jdbcType=BIGINT},
+      part_plan_id = #{record.partPlanId,jdbcType=BIGINT},
+      part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      process_mode_id = #{record.processModeId,jdbcType=BIGINT},
+      part_drawing_num = #{record.partDrawingNum,jdbcType=VARCHAR},
+      turn_out_time = #{record.turnOutTime,jdbcType=VARCHAR},
+      plan_finish_time = #{record.planFinishTime,jdbcType=VARCHAR},
+      actual_finish_time = #{record.actualFinishTime,jdbcType=VARCHAR},
+      days = #{record.days,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DECIMAL},
+      out_id = #{record.outId,jdbcType=BIGINT},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      plan_process_status = #{record.planProcessStatus,jdbcType=BIGINT},
+      do_sort = #{record.doSort,jdbcType=INTEGER},
+      process_id = #{record.processId,jdbcType=BIGINT},
+      way = #{record.way,jdbcType=VARCHAR},
+      out_name = #{record.outName,jdbcType=VARCHAR},
+      status_name = #{record.statusName,jdbcType=VARCHAR},
+      process_name = #{record.processName,jdbcType=VARCHAR},
+      part_num = #{record.partNum,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      spec_type = #{record.specType,jdbcType=VARCHAR},
+      num = #{record.num,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

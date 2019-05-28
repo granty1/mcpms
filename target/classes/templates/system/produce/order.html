@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+    <style>
+        .table>tbody>tr:hover {
+            background-color: #DDFFFF;
+        }
+    </style>
+</head>
+<body ng-app="mcpms" ng-controller="ProduceOrderController" ng-init="initData()">
+
+<!-- 订单数据列表 开始 -->
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form" style="float: right;">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            订单号：<input type="text" ng-model="search.orderNum"/>
+                        </li>
+                        <li>
+                            状态：<select ng-model="search.status">
+                            <option value="51">执行中</option>
+                            <option value="52">完成</option>
+                            <option value="53">报废</option>
+                        </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadOrderList()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" ng-click="search={};"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 search-collapse">
+            <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+                <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#editOrder">
+                        <i class="fa fa-plus"></i> 新增订单
+                    </a>
+                    <a class="btn btn-danger btn-del" ng-click="deleteBatch()">
+                        <i class="fa fa-remove"></i> 批量删除
+                    </a>
+                    <a class="btn btn-default" ng-click="reloadOrderList()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </a>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>订单编号</th>
+                        <th>客户名称</th>
+                        <th>地址</th>
+                        <th>联系电话</th>
+                        <th>签订时间</th>
+                        <th>交货时间</th>
+                        <th>交货地址</th>
+                        <th>总价</th>
+                        <th>备注</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="order in orderList" ng-click="orderSelect(order)">
+                        <td><input ng-if="order.statusName=='完成'" type="checkbox" ng-click="updateOrderSelection($event,order.id)"></td>
+                        <td ng-bind="order.orderNum"></td>
+                        <td ng-bind="order.name"></td>
+                        <td ng-bind="order.address"></td>
+                        <td ng-bind="order.tel"></td>
+                        <td ng-bind="order.signTime"></td>
+                        <td ng-bind="order.deliverTime"></td>
+                        <td ng-bind="order.deliverAddress"></td>
+                        <td ng-bind="order.price"></td>
+                        <td ng-bind="order.remarks"></td>
+                        <td><a href="#" style="font-weight: bold;color: #1b6d85" ng-bind="order.statusName"></a></td>
+                        <td>
+                            <button ng-if="order.statusName=='进行中'" class="btn btn-success btn-xs" ng-click="orderFinish(order.id)">完成</button>
+                            <button ng-if="order.statusName=='进行中'" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editOrder" ng-click="findone(order.id)">修改</button>
+                            <button ng-if="order.statusName=='进行中'" class="btn btn-danger btn-xs" ng-click="orderScrap(order.id)">作废</button>
+                            <button ng-if="order.statusName=='完成'" class="btn btn-danger btn-xs" ng-click="delete(order.id)">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="orderPaginationConf"></tm-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 订单数据列表 结束 -->
+
+
+<!-- 订单-产品数据列表 开始 -->
+<div class="container-div" id="orderProductDIV" hidden="hidden" style="width: 70%;vertical-align: center">
+    <div class="row">
+        <div class="col-sm-12  search-collapse">
+            <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+                <h3>客户名称：{{currentOrder.name}} - 订单编号：{{currentOrder.orderNum}}</h3><br>
+                <div class="btn-group-sm hidden-xs" id="toolbar-product" role="group">
+                    <a class="btn btn-success" ng-if="currentOrder.statusName=='进行中'" data-toggle="modal" data-target="#editProduct">
+                        <i class="fa fa-plus"></i> 添加产品
+                    </a>
+                    <a class="btn btn-danger btn-del" ng-if="currentOrder.statusName=='进行中'" ng-click="deleteBatchPro()">
+                        <i class="fa fa-remove"></i> 批量删除
+                    </a>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>产品名称</th>
+                        <th>数量</th>
+                        <th>单价</th>
+                        <th>备注</th>
+                        <th ng-if="currentOrder.statusName=='进行中'">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="product in productList">
+                        <td><input type="checkbox" ng-click="updateProductSelection($event,product.id)"></td>
+                        <td ng-bind="product.name"></td>
+                        <td ng-bind="product.num"></td>
+                        <td ng-bind="product.price"></td>
+                        <td ng-bind="product.remarks"></td>
+                        <td ng-if="currentOrder.statusName=='进行中'">
+                            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editProduct" ng-click="findOnePro(product.id)">修改</button>
+                            <button class="btn btn-danger btn-xs" ng-click="deletePro(product.id)">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 订单-产品数据列表 结束 -->
+
+
+
+
+
+<!-- 订单编辑模态框 开始 -->
+<div class="modal fade" id="editOrder" tabindex="-1" role="dialog" aria-labelledby="editOrder" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" >订单编辑</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form layui-form-pane1" action="" lay-filter="first">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">订单编号</label>
+                        <div class="layui-input-block">
+                            <input type="text"ng-model="order.orderNum" placeholder="订单编号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="order.name" placeholder="客户名称" lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="order.address" placeholder="地址" lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="order.tel" placeholder="联系电话" lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">签订时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="签订时间" class="layui-input" id="signTimeDate">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">交货时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" placeholder="交货时间" class="layui-input" id="deliverTimeDate">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">交货地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="order.deliverAddress" placeholder="交货地址" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <textarea placeholder="请输入内容" ng-model="order.remarks" class="layui-textarea" ></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="order={}">关闭</button>
+                <button type="button" class="layui-btn" ng-click="saveOrder()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 订单编辑模态框 结束 -->
+
+<!-- 产品编辑模态框 开始 -->
+<div class="modal fade" id="editProduct" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" >产品编辑</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped" width="800px">
+                    <tr>
+                        <td>产品</td>
+                        <td>
+                            <select class="form-control" ng-model="product.productId">
+                                <option value="{{productitem.id}}" ng-repeat="productitem in productDataList" ng-bind="productitem.name"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>数量</td>
+                        <td>
+                            <input type="number" class="form-control" ng-model="product.num" placeholder="数量"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>单价</td>
+                        <td>
+                            <input type="number" ng-model="product.price" placeholder="单价" class="form-control">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>备注</td>
+                        <td>
+                            <textarea class="form-control" ng-model="product.remarks"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="product={}">关闭</button>
+                <button type="button" class="layui-btn" ng-click="saveProduct()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 产品编辑模态框 结束 -->
+
+
+
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../pagination/pagination.js"></script>
+<script src="../../js/angularjs/app_pagination.js"></script>
+<script src="../../js/angularjs/service/system/produce/ProduceOrderService.js"></script>
+<script src="../../js/angularjs/controller/system/produce/ProduceOrderController.js"></script>
+</body>
+</html>

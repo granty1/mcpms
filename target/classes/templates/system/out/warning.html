@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>外协预警</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+</head>
+<body ng-app="mcpms" ng-controller="OutWarningController" ng-init="initData()">
+
+
+    <!-- container start -->
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="role-form" style="float: right;">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                订单号：<input type="text" ng-model="search.orderNum"/>
+                            </li>
+                            <li>
+                                产品：<select  ng-model="search.productId">
+                                <option ></option>
+                                <option value="{{productSearch.id}}" ng-repeat="productSearch in searchProductData" ng-bind="productSearch.name">产品1</option>
+                            </select>
+                            </li>
+                            <li>
+                                零件名称：<select ng-model="search.partId">
+                                <option ></option>
+                                <option value="{{partsSearch.id}}" ng-repeat="partsSearch in searchPartsData" ng-bind="partsSearch.name"></option>
+                            </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadOutWarningList()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" ng-click="search={};"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-sm-12 search-collapse">
+                <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+                    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                        <a class="btn btn-default" ng-click="reloadOutWarningList()">
+                            <i class="fa fa-refresh"></i> 刷新
+                        </a>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>产品</th>
+                            <th>零件</th>
+                            <th>工序</th>
+                            <th>加工方式</th>
+                            <th>外协单位</th>
+                            <th>外转时间</th>
+                            <th>计划时间</th>
+                            <th>距计划时间天数</th>
+                            <th>外协联系人</th>
+                            <th>联系电话</th>
+                            <th>已催次数</th>
+                            <th>最近催单</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="warning in outWarningList">
+                            <td ng-bind="warning.orderNum"></td>
+                            <td ng-bind="warning.productName"></td>
+                            <td ng-bind="warning.partName"></td>
+                            <td ng-bind="warning.name"></td>
+                            <td ng-bind="warning.way"></td>
+                            <td ng-bind="warning.outName"></td>
+                            <td ng-bind="warning.outTime"></td>
+                            <td ng-bind="warning.planTime"></td>
+                            <td>
+                                <a ng-if="warning.day>=5" style="color: #ff847c;font-weight: bold" ng-bind="warning.day"></a>
+                                <a ng-if="warning.day<5" style="color: #e84a5f;font-weight: bold" ng-bind="warning.day"></a>
+                            </td>
+                            <td ng-bind="warning.outPerson"></td>
+                            <td ng-bind="warning.outTel"></td>
+                            <td ng-bind="warning.expeditingNum"></td>
+                            <td ng-bind="warning.expeditingTime"></td>
+                            <td ng-bind="warning.remarks"></td>
+                            <td>
+                                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger"  ng-click="expediting(warning.id)">催单</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <tm-pagination conf="outWarningPagination"></tm-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- container end -->
+
+
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../layer/layer.js"></script>
+    <script src="../../layer/layui.js"></script>
+    <script src="../../js/angularjs/angular.min.js"></script>
+    <script src="../../pagination/pagination.js"></script>
+    <script src="../../js/angularjs/app_pagination.js"></script>
+    <script src="../../js/angularjs/service/system/out/OutWarningService.js"></script>
+    <script src="../../js/angularjs/service/system/produce/ProducePlanService.js"></script>
+    <script src="../../js/angularjs/controller/system/out/OutWarningController.js"></script>
+</body>
+</html>

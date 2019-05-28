@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.out.VWarningMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.out.VWarning" >
+    <result column="part_name" property="partName" jdbcType="VARCHAR" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="deliver_time" property="deliverTime" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="part_id" property="partId" jdbcType="BIGINT" />
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="expediting_time" property="expeditingTime" jdbcType="VARCHAR" />
+    <result column="expediting_num" property="expeditingNum" jdbcType="INTEGER" />
+    <result column="order_product_part_id" property="orderProductPartId" jdbcType="BIGINT" />
+    <result column="day" property="day" jdbcType="INTEGER" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="drawing_num" property="drawingNum" jdbcType="VARCHAR" />
+    <result column="part_process_id" property="partProcessId" jdbcType="BIGINT" />
+    <result column="mode_id" property="modeId" jdbcType="BIGINT" />
+    <result column="plan_time" property="planTime" jdbcType="VARCHAR" />
+    <result column="out_id" property="outId" jdbcType="BIGINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="approve_status" property="approveStatus" jdbcType="INTEGER" />
+    <result column="approve_people" property="approvePeople" jdbcType="VARCHAR" />
+    <result column="approve_time" property="approveTime" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="way" property="way" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="out_person" property="outPerson" jdbcType="VARCHAR" />
+    <result column="out_name" property="outName" jdbcType="VARCHAR" />
+    <result column="out_tel" property="outTel" jdbcType="VARCHAR" />
+    <result column="out_address" property="outAddress" jdbcType="VARCHAR" />
+    <result column="out_time" property="outTime" jdbcType="VARCHAR" />
+    <result column="repertory_status" property="repertoryStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    part_name, order_num, deliver_time, product_name, product_id, part_id, id, type, 
+    expediting_time, expediting_num, order_product_part_id, day, num, drawing_num, part_process_id, 
+    mode_id, plan_time, out_id, remarks, status, approve_status, approve_people, approve_time, 
+    name, way, price, out_person, out_name, out_tel, out_address, out_time, repertory_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.out.VWarningExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_warning
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.out.VWarningExample" >
+    delete from v_warning
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.out.VWarning" >
+    insert into v_warning (part_name, order_num, deliver_time, 
+      product_name, product_id, part_id, 
+      id, type, expediting_time, 
+      expediting_num, order_product_part_id, day, 
+      num, drawing_num, part_process_id, 
+      mode_id, plan_time, out_id, 
+      remarks, status, approve_status, 
+      approve_people, approve_time, name, 
+      way, price, out_person, 
+      out_name, out_tel, out_address, 
+      out_time, repertory_status)
+    values (#{partName,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR}, #{deliverTime,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, #{partId,jdbcType=BIGINT}, 
+      #{id,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{expeditingTime,jdbcType=VARCHAR}, 
+      #{expeditingNum,jdbcType=INTEGER}, #{orderProductPartId,jdbcType=BIGINT}, #{day,jdbcType=INTEGER}, 
+      #{num,jdbcType=INTEGER}, #{drawingNum,jdbcType=VARCHAR}, #{partProcessId,jdbcType=BIGINT}, 
+      #{modeId,jdbcType=BIGINT}, #{planTime,jdbcType=VARCHAR}, #{outId,jdbcType=BIGINT}, 
+      #{remarks,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{approveStatus,jdbcType=INTEGER}, 
+      #{approvePeople,jdbcType=VARCHAR}, #{approveTime,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{way,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{outPerson,jdbcType=VARCHAR}, 
+      #{outName,jdbcType=VARCHAR}, #{outTel,jdbcType=VARCHAR}, #{outAddress,jdbcType=VARCHAR}, 
+      #{outTime,jdbcType=VARCHAR}, #{repertoryStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.out.VWarning" >
+    insert into v_warning
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="partName != null" >
+        part_name,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="deliverTime != null" >
+        deliver_time,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="partId != null" >
+        part_id,
+      </if>
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="expeditingTime != null" >
+        expediting_time,
+      </if>
+      <if test="expeditingNum != null" >
+        expediting_num,
+      </if>
+      <if test="orderProductPartId != null" >
+        order_product_part_id,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="drawingNum != null" >
+        drawing_num,
+      </if>
+      <if test="partProcessId != null" >
+        part_process_id,
+      </if>
+      <if test="modeId != null" >
+        mode_id,
+      </if>
+      <if test="planTime != null" >
+        plan_time,
+      </if>
+      <if test="outId != null" >
+        out_id,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="approveStatus != null" >
+        approve_status,
+      </if>
+      <if test="approvePeople != null" >
+        approve_people,
+      </if>
+      <if test="approveTime != null" >
+        approve_time,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="way != null" >
+        way,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="outPerson != null" >
+        out_person,
+      </if>
+      <if test="outName != null" >
+        out_name,
+      </if>
+      <if test="outTel != null" >
+        out_tel,
+      </if>
+      <if test="outAddress != null" >
+        out_address,
+      </if>
+      <if test="outTime != null" >
+        out_time,
+      </if>
+      <if test="repertoryStatus != null" >
+        repertory_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="partName != null" >
+        #{partName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverTime != null" >
+        #{deliverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="partId != null" >
+        #{partId,jdbcType=BIGINT},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="expeditingTime != null" >
+        #{expeditingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="expeditingNum != null" >
+        #{expeditingNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderProductPartId != null" >
+        #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="drawingNum != null" >
+        #{drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="partProcessId != null" >
+        #{partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="modeId != null" >
+        #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="planTime != null" >
+        #{planTime,jdbcType=VARCHAR},
+      </if>
+      <if test="outId != null" >
+        #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="approveStatus != null" >
+        #{approveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="approvePeople != null" >
+        #{approvePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null" >
+        #{approveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="way != null" >
+        #{way,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="outPerson != null" >
+        #{outPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="outName != null" >
+        #{outName,jdbcType=VARCHAR},
+      </if>
+      <if test="outTel != null" >
+        #{outTel,jdbcType=VARCHAR},
+      </if>
+      <if test="outAddress != null" >
+        #{outAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="outTime != null" >
+        #{outTime,jdbcType=VARCHAR},
+      </if>
+      <if test="repertoryStatus != null" >
+        #{repertoryStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.out.VWarningExample" resultType="java.lang.Integer" >
+    select count(*) from v_warning
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update v_warning
+    <set >
+      <if test="record.partName != null" >
+        part_name = #{record.partName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliverTime != null" >
+        deliver_time = #{record.deliverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=BIGINT},
+      </if>
+      <if test="record.partId != null" >
+        part_id = #{record.partId,jdbcType=BIGINT},
+      </if>
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.expeditingTime != null" >
+        expediting_time = #{record.expeditingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expeditingNum != null" >
+        expediting_num = #{record.expeditingNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderProductPartId != null" >
+        order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="record.day != null" >
+        day = #{record.day,jdbcType=INTEGER},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.drawingNum != null" >
+        drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partProcessId != null" >
+        part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.modeId != null" >
+        mode_id = #{record.modeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.planTime != null" >
+        plan_time = #{record.planTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outId != null" >
+        out_id = #{record.outId,jdbcType=BIGINT},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.approveStatus != null" >
+        approve_status = #{record.approveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.approvePeople != null" >
+        approve_people = #{record.approvePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveTime != null" >
+        approve_time = #{record.approveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.way != null" >
+        way = #{record.way,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.outPerson != null" >
+        out_person = #{record.outPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outName != null" >
+        out_name = #{record.outName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outTel != null" >
+        out_tel = #{record.outTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outAddress != null" >
+        out_address = #{record.outAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outTime != null" >
+        out_time = #{record.outTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repertoryStatus != null" >
+        repertory_status = #{record.repertoryStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update v_warning
+    set part_name = #{record.partName,jdbcType=VARCHAR},
+      order_num = #{record.orderNum,jdbcType=VARCHAR},
+      deliver_time = #{record.deliverTime,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=BIGINT},
+      part_id = #{record.partId,jdbcType=BIGINT},
+      id = #{record.id,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      expediting_time = #{record.expeditingTime,jdbcType=VARCHAR},
+      expediting_num = #{record.expeditingNum,jdbcType=INTEGER},
+      order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      day = #{record.day,jdbcType=INTEGER},
+      num = #{record.num,jdbcType=INTEGER},
+      drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      mode_id = #{record.modeId,jdbcType=BIGINT},
+      plan_time = #{record.planTime,jdbcType=VARCHAR},
+      out_id = #{record.outId,jdbcType=BIGINT},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      approve_status = #{record.approveStatus,jdbcType=INTEGER},
+      approve_people = #{record.approvePeople,jdbcType=VARCHAR},
+      approve_time = #{record.approveTime,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      way = #{record.way,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      out_person = #{record.outPerson,jdbcType=VARCHAR},
+      out_name = #{record.outName,jdbcType=VARCHAR},
+      out_tel = #{record.outTel,jdbcType=VARCHAR},
+      out_address = #{record.outAddress,jdbcType=VARCHAR},
+      out_time = #{record.outTime,jdbcType=VARCHAR},
+      repertory_status = #{record.repertoryStatus,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

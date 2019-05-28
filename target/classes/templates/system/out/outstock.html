@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>外协出库</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+</head>
+<body ng-app="mcpms" ng-controller="OutoutStockController" ng-init="initData()">
+
+
+    <!-- 出库数据列表 开始 -->
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="role-form" style="float: right;">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                订单号：<input type="text" ng-model="search.orderNum"/>
+                            </li>
+                            <li>
+                                产品：<select style="size: 10px" ng-model="search.productId">
+                                <option ></option>
+                                <option value="{{productSearch.id}}" ng-repeat="productSearch in searchProductData" ng-bind="productSearch.name">产品1</option>
+                            </select>
+                            </li>
+                            <li>
+                                零件：<select ng-model="search.partsId">
+                                <option ></option>
+                                <option value="{{partsSearch.id}}" ng-repeat="partsSearch in searchPartsData" ng-bind="partsSearch.name"></option>
+                            </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadOutStockList()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" ng-click="search={};"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-sm-12 search-collapse">
+                <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+                    <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                        <a class="btn btn-default" ng-click="reloadOutStockList()">
+                            <i class="fa fa-refresh"></i> 刷新
+                        </a>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>订单编号</th>
+                            <th>产品名称</th>
+                            <th>流水号</th>
+                            <th>图号</th>
+                            <th>零件名称</th>
+                            <th>计划量</th>
+                            <th>报废量</th>
+                            <th>工序</th>
+                            <th>加工方式</th>
+                            <th>外协单位</th>
+                            <th>计划时间</th>
+                            <th>备注</th>
+                            <th>是否插单</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="outStock in outStockList">
+                            <td ng-bind="outStock.orderNum"></td>
+                            <td ng-bind="outStock.productName"></td>
+                            <td ng-bind="outStock.runningNum"></td>
+                            <td ng-bind="outStock.drawingNum"></td>
+                            <td ng-bind="outStock.partsName"></td>
+                            <td ng-bind="outStock.num"></td>
+                            <td ng-bind="outStock.actualNum"></td>
+                            <td ng-bind="outStock.processName"></td>
+                            <td ng-bind="outStock.way"></td>
+                            <td ng-bind="outStock.outName"></td>
+                            <td ng-bind="outStock.planTime"></td>
+                            <td ng-bind="outStock.remarks"></td>
+                            <td ng-bind="outStock.isInsertStr"></td>
+                            <td>
+                                <button  class="btn btn-success btn-xs" ng-click="outstock(outStock.id)">出库</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <tm-pagination conf="outStockPagination"></tm-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 出库数据列表 结束 -->
+
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../layer/layer.js"></script>
+    <script src="../../layer/layui.js"></script>
+    <script src="../../js/angularjs/angular.min.js"></script>
+    <script src="../../pagination/pagination.js"></script>
+    <script src="../../js/angularjs/app_pagination.js"></script>
+    <script src="../../js/angularjs/service/system/out/OutoutStockService.js"></script>
+    <script src="../../js/angularjs/service/system/produce/ProducePlanService.js"></script>
+    <script src="../../js/angularjs/controller/system/out/OutoutStockController.js"></script>
+</body>
+</html>

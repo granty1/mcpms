@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.base.MPartMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.base.MPart" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="part_num" property="partNum" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="drawing_num" property="drawingNum" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="spec_type" property="specType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, part_num, name, drawing_num, unit, remarks, spec_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.base.MPartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_part
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_part
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_part
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.base.MPartExample" >
+    delete from m_part
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.base.MPart" >
+    insert into m_part (id, part_num, name, 
+      drawing_num, unit, remarks, 
+      spec_type)
+    values (#{id,jdbcType=BIGINT}, #{partNum,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{drawingNum,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{specType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.base.MPart" >
+    insert into m_part
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="partNum != null" >
+        part_num,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="drawingNum != null" >
+        drawing_num,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="specType != null" >
+        spec_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="partNum != null" >
+        #{partNum,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="drawingNum != null" >
+        #{drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="specType != null" >
+        #{specType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.base.MPartExample" resultType="java.lang.Integer" >
+    select count(*) from m_part
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update m_part
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.partNum != null" >
+        part_num = #{record.partNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drawingNum != null" >
+        drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specType != null" >
+        spec_type = #{record.specType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update m_part
+    set id = #{record.id,jdbcType=BIGINT},
+      part_num = #{record.partNum,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      spec_type = #{record.specType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcpms.mcpms.system.pojo.base.MPart" >
+    update m_part
+    <set >
+      <if test="partNum != null" >
+        part_num = #{partNum,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="drawingNum != null" >
+        drawing_num = #{drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="specType != null" >
+        spec_type = #{specType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcpms.mcpms.system.pojo.base.MPart" >
+    update m_part
+    set part_num = #{partNum,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      drawing_num = #{drawingNum,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      spec_type = #{specType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

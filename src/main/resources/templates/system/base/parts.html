@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>零件管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+    <link href="../../css/secondmodal.css" rel="stylesheet">
+    <style type="text/css">
+        .secondmodal{
+            margin-top: 2%;
+        }
+        #addProcessModal{
+            width: 40%;
+            height: fit-content;
+        }
+        #cloneProcessModal{
+            width: 20%;
+            height: fit-content;
+        }
+    </style>
+</head>
+<body ng-app="mcpms" ng-controller="BasePartsController" ng-init="initData()">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form" style="float: right;">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            存货编码：<input ng-model="search.partNum" type="text"/>
+                        </li>
+                        <li>
+                            零件名称：<input ng-model="search.name" type="text"/>
+                        </li>
+                        <li>
+                            零件图号：<input ng-model="search.drawingNum" type="text"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadPartsList()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" ng-click="search={}"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+            <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                <a class="btn btn-success" data-toggle="modal" data-target="#editParts">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-danger btn-del" ng-click="deleteBatch()">
+                    <i class="fa fa-remove"></i> 批量删除
+                </a>
+                <a class="btn btn-default" ng-click="reloadPartsList()">
+                    <i class="fa fa-refresh"></i> 刷新
+                </a>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>存货编码</th>
+                    <th>零件名称</th>
+                    <th>零件图号</th>
+                    <th>规格型号</th>
+                    <th>单位</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="parts in partsList">
+                    <td><input type="checkbox" ng-click="updatePartsSelection($event,parts.id)"></td>
+                    <td ng-bind="parts.partNum"></td>
+                    <td><a ng-bind="parts.name"></a></td>
+                    <td ng-bind="parts.drawingNum"></td>
+                    <td ng-bind="parts.specType"></td>
+                    <td ng-bind="parts.unit"></td>
+                    <td ng-bind="parts.remarks"></td>
+                    <td>
+                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#editProcess" ng-click="updateCurrentParts(parts)">工序编辑</button>
+                        <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editParts" ng-click="findone(parts.id)">修改信息</button>
+                        <button class="btn btn-danger btn-xs" ng-click="delete(parts.id)">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <tm-pagination conf="partsPaginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 零件修改模态框 开始 -->
+<div class="modal fade" id="editParts" tabindex="-1" role="dialog" aria-labelledby="editParts" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="">零件编辑</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form layui-form-pane1" action="" lay-filter="first">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">存货编码</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="parts.partNum" placeholder="存货编码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">零件名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="parts.name" placeholder="零件名称" lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">零件图号</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="parts.drawingNum" placeholder="零件图号" lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">单位</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="parts.unit" placeholder="单位" lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">规格型号</label>
+                        <div class="layui-input-block">
+                            <input type="text" ng-model="parts.specType" placeholder="规格型号" lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <textarea placeholder="请输入内容" ng-model="parts.remarks" class="layui-textarea" name="desc"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="parts={};currentParts={};">关闭</button>
+                <button type="button" class="layui-btn" ng-click="partsSave()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 零件修改模态框 结束 -->
+
+
+
+<!-- 工序编辑模态框 开始 -->
+<div class="modal fade" id="editProcess" tabindex="-1" role="dialog" aria-labelledby="editProcess" aria-hidden="true">
+    <div class="modal-dialog" style="width: 70%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">工序编辑</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"  width="800px">
+                    <tr>
+                        <td>零件名称</td>
+                        <td><a href="#" ng-bind="currentParts.name"></a></td>
+                    </tr>
+                </table>
+                <div class="select-list">
+                    <a class="btn btn-success" ng-click="openProcessModal()">
+                        <i class="fa fa-plus"></i> 添加工序
+                    </a>
+                    <a class="btn btn-primary" ng-click="cloneProcess()">
+                        <i class="fa fa-plus"></i> 克隆工序
+                    </a>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>加工工序</th>
+                        <th>加工方式</th>
+                        <th>外协单位</th>
+                        <th>执行优先级</th>
+                        <th>工序图号</th>
+                        <th>单价</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="process in processList">
+                        <td><a ng-bind="process.processName"></a></td>
+                        <td ng-bind="process.way"></td>
+                        <td ng-bind="process.outName"></td>
+                        <td ng-bind="process.day"></td>
+                        <td ng-bind="process.drawingNum"></td>
+                        <td ng-bind="process.price"></td>
+                        <td ng-bind="process.remarks"></td>
+                        <td>
+                            <button class="btn btn-primary btn-xs" ng-click="openProcessModal(process.id)">修改</button>
+                            <button class="btn btn-danger btn-xs" ng-click="processDelete(process.id)">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="currentParts={};">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 工序编辑模态框 结束 -->
+
+
+
+<!-- 新增/修改 工序 模态框 开始 -->
+<div id="addProcessModal" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">零件-工序</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-striped" width="800px">
+            <tr>
+                <td>加工工序</td>
+                <td>
+                    <select class="form-control" ng-model="process.processId" >
+                        <option></option>
+                        <option value="{{processitem.id}}" ng-repeat="processitem in processDataList" ng-bind="processitem.name"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>加工方式</td>
+                <td>
+                    <select class="form-control" ng-model="process.modeId">
+                        <option></option>
+                        <option value="{{method.id}}" ng-repeat="method in processMethodList" ng-bind="method.way"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>外协单位</td>
+                <td>
+                    <select class="form-control" ng-model="process.outId">
+                        <option></option>
+                        <option value="{{out.id}}" ng-repeat="out in outSourceList" ng-bind="out.name"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>执行优先级</td>
+                <td>
+                    <input type="number" class="form-control" ng-model="process.day"/>
+                </td>
+            </tr>
+            <tr>
+                <td>工序图号</td>
+                <td>
+                    <input  type="text" class="form-control" ng-model="process.drawingNum"/>
+                </td>
+            </tr>
+            <tr>
+                <td>单价</td>
+                <td>
+                    <input type="number" class="form-control" ng-model="process.price"/>
+                </td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td>
+                    <textarea class="form-control" ng-model="process.remarks"></textarea>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="clearProcess()">关闭</button>
+        <button type="button" class="layui-btn" ng-click="processSave()">保存</button>
+    </div>
+</div>
+<!-- 新增/修改 工序 模态框 结束 -->
+
+
+<!-- 克隆工序 模态框 开始 -->
+<div id="cloneProcessModal" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">工序克隆</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-striped" width="800px">
+            <tr>
+                <td>目标零件</td>
+                <td>
+                    <select class="form-control" ng-model="targetId">
+                        <option value="{{part.id}}" ng-repeat="part in cloneList" ng-bind="part.name"></option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">关闭</button>
+        <button type="button" class="layui-btn" ng-click="cloneSave()">保存</button>
+    </div>
+</div>
+<!-- 克隆工序 模态框 结束 -->
+
+
+
+
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/jquery-ui-1.10.4.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../pagination/pagination.js"></script>
+<script src="../../js/angularjs/app_pagination.js"></script>
+<script src="../../js/angularjs/service/system/base/BasePartsService.js"></script>
+<script src="../../js/angularjs/controller/system/base/BasePartsController.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#editProcess').draggable()
+        $('#addProcessModal').draggable()
+        $('#editParts').draggable()
+        $('#cloneProcessModal').draggable()
+    })
+</script>
+
+</body>
+</html>

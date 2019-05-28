@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>登录</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/base.css">
+	<link rel="stylesheet" href="css/login.css" />
+	<link rel="stylesheet" href="layer/layui.css"/>
+</head>
+<body ng-app="mcpms" ng-controller="loginController">
+	<!-- particles.js container -->
+	<div id="particles-js"></div>
+	<div id="wrapper">
+		<div style="position: relative;left: -80px;">
+			<img src="img/logo.png" />
+			<h2></h2>
+		</div>
+		<nav class="switch_nav">
+			<a href="javascript:;" id="switch_login" class="switch_btn">登录</a>
+		</nav>
+		<div id="login">
+			<form action="">
+				<ul class="group_input">
+					<li>
+						<input  type="text" class="mobile required" ng-model="user.username" placeholder="账号" />
+					</li>
+					<br>
+					<li>
+						<input type="password" class="psd required" ng-model="user.password" placeholder="密码" />
+					</li>
+				</ul>
+				<br>
+				<button type="button" class="submit_btn" style="cursor: pointer" ng-click="login()">登录</button>
+			</form>
+		</div>
+		<div id="footer">
+
+		</div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/particles.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="layer/layer.js"></script>
+	<script src="layer/layui.js"></script>
+	<script src="js/angularjs/angular.min.js"></script>
+	<script src="js/angularjs/app.js"></script>
+	<script>
+        $(function(){
+            login.initPage();
+        });
+
+        var login = {
+            initPage: function () {
+                //alert(location.href);
+                if (window.top != window.self) {
+                    top.location.href = location.href;
+                }
+            },
+        }
+		app.controller('loginController',function ($scope,$http) {
+
+		    $scope.user = {}
+
+		    $scope.login = function(){
+				showLoad()
+				$http.post('../system/login',$scope.user).success((response)=>{
+				    closeLoad()
+                    if(response.code==200){
+						location.href = '../?au='+response.data
+                    }else {
+                        requestError(response.msg)
+                    }
+                }).error((e)=>{
+                    systemError()
+                })
+			}
+        })
+	</script>
+</body>
+</html>

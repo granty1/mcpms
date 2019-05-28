@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>产品管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../css/secondmodal.css" rel="stylesheet">
+    <style type="text/css">
+        #secondmodal {
+            width: 25%;
+            height: 26%;
+        }
+        #batchAddParts{
+            width: 40%;
+            height: fit-content;
+        }
+    </style>
+</head>
+<body ng-app="mcpms" ng-controller="BaseProductController">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="role-form" style="float: right;">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                名称：<input type="text" name="roleName"/>
+                            </li>
+                            <li>
+                                型号：<input type="text" name="roleKey"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" ><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" ><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+            <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+
+                <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                    <a class="btn btn-success"  data-toggle="modal" data-target="#editProduct">
+                        <i class="fa fa-plus"></i> 新增
+                    </a>
+                    <a class="btn btn-danger btn-del" ng-click="deleteBatch()">
+                        <i class="fa fa-remove"></i> 批量删除
+                    </a>
+                    <a class="btn btn-warning">
+                        <i class="fa fa-download"></i> 导出
+                    </a>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>产品型号</th>
+                        <th>产品名称</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="product in productList">
+                            <td><input type="checkbox" ng-click="productUpdateSelection($event,product.id)"></td>
+                            <td ng-bind="product.type"></td>
+                            <td><a ng-bind="product.name"></a></td>
+                            <td ng-bind="product.ps"></td>
+                            <td>
+                                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#editParts" ng-click="updateCurrentProductId(product.id)">零件管理</button>
+                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editProduct">修改信息</button>
+                                <button class="btn btn-danger btn-xs" ng-click="delete(product.id)">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="productPaginationConf"></tm-pagination>
+            </div>
+        </div>
+    </div>
+    {{productSelectIds}}<br>
+    {{productList}}
+
+    <!-- 零件管理模态框 开始 -->
+    <div class="modal fade" id="editParts" tabindex="-1" role="dialog" aria-labelledby="editParts" aria-hidden="true">
+        <div class="modal-dialog" style="width: 70%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">编辑零件</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped"  width="800px">
+                        <tr>
+                            <td>产品</td>
+                            <td><a href="#">超纤革机</a></td>
+                        </tr>
+                    </table>
+                    <div class="select-list">
+                        <a class="btn btn-success" ng-click="openPartsModal()">
+                            <i class="fa fa-plus"></i> 批量添加零件
+                        </a>
+                        <a class="btn btn-danger btn-del" ng-click="partsDeleteBatch()">
+                            <i class="fa fa-remove"></i> 批量删除
+                        </a>
+                        <ul style="float: right;">
+                            <li >
+                                零件编号<input type="text" name="roleName"/>
+                            </li>
+                            <li >
+                                零件名称<input type="text" name="roleKey"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" ><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" ><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>零件编号</th>
+                            <th>零件名称</th>
+                            <th>数量</th>
+                            <th>单位</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="parts in partsList">
+                            <td><input type="checkbox" ng-click="updatePartsSelection($event,parts.id)"></td>
+                            <td><a ng-bind="parts.bh"></a></td>
+                            <td ng-bind="parts.mc"></td>
+                            <td ng-bind="parts.num"></td>
+                            <td ng-bind="parts.dw"></td>
+                            <td>
+                                <button class="btn btn-primary btn-xs" ng-click="openPartsModal(parts.id)">修改数量</button>
+                                <button class="btn btn-danger btn-xs" ng-click="partsDelete(parts.id)">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <tm-pagination conf="productPartsPaginationConf"></tm-pagination>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+                {{partsSelectIds}}
+            </div>
+        </div>
+    </div>
+    <!-- 零件管理模态框 结束 -->
+
+
+
+    <!-- 产品修改模态框 开始 -->
+    <div class="modal fade" id="editProduct" tabindex="-1" role="dialog" aria-labelledby="editProduct" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="">产品编辑</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="layui-form layui-form-pane1" action="" lay-filter="first">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">产品型号</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" ng-model="product.type" placeholder="产品型号" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">产品名称</label>
+                            <div class="layui-input-block">
+                                <input type="tel" name="phone" ng-model="product.name" placeholder="产品名称" lay-verType="tips" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">备注</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="请输入内容" ng-model="product.ps" class="layui-textarea" name="desc"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                {{product}}
+                <div class="modal-footer">
+                    <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="layui-btn" ng-click="saveProduct()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 产品修改模态框 结束 -->
+
+
+
+
+
+    <!-- 产品修改零件数量模态框 开始 -->
+    <div id="secondmodal" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">零件数量编辑</h4>
+        </div>
+        <div class="modal-body">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">需要数量</label>
+                    <div class="layui-input-block">
+                        <input type="number" placeholder="请输入数量,默认为1" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">关闭</button>
+            <button type="button" class="layui-btn" ng-click="savePartsNum()">保存</button>
+        </div>
+    </div>
+    <!-- 产品修改零件数量模态框 结束 -->
+
+
+    <!-- 批量添加零件模态框 开始 -->
+    <div id="batchAddParts" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">零件批量添加</h4>
+        </div>
+        <div class="modal-body">
+            <div class="select-list">
+                <ul style="float: right;">
+                    <li >
+                        零件名称<input type="text"/>
+                    </li>
+                    <li>
+                        <a class="btn btn-primary btn-rounded btn-sm" ><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" ><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </li>
+                </ul>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>零件名称</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="noChoiceparts in noChoicepartsList">
+                    <td><input type="checkbox" ng-click="noChoiceUpdateSelection($event,noChoiceparts.id)"></td>
+                    <td ng-bind="noChoiceparts.mc"></td>
+                </tr>
+                </tbody>
+            </table>
+            <tm-pagination conf="productNoChoicePartsPaginationConf"></tm-pagination>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal">关闭</button>
+            <button type="button" class="layui-btn" ng-click="batchAddParts()">批量添加</button>
+        </div>
+        {{noChoiceSelectId}}
+    </div>
+    <!-- 产品修改零件数量模态框 结束 -->
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/angularjs/angular.min.js"></script>
+    <script src="../../pagination/pagination.js"></script>
+    <script src="../../js/angularjs/app_pagination.js"></script>
+    <script src="../../js/angularjs/controller/system/base/BaseProductController.js"></script>
+    <script src="../../layer/layer.js"></script>
+    <script src="../../layer/layui.js"></script>
+
+
+</body>
+</html>

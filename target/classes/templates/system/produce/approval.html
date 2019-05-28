@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>审批管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+    <link href="../../css/secondmodal.css" rel="stylesheet">
+</head>
+<body ng-app="mcpms" ng-controller="ProduceApprovalController" ng-init="initData()">
+
+
+<!-- container start -->
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form" style="float: right;">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            订单号：<input type="text" ng-model="search.orderNum"/>
+                        </li>
+                        <li>
+                            产品：<select style="size: 10px" ng-model="search.productId">
+                            <option ></option>
+                            <option value="{{productSearch.id}}" ng-repeat="productSearch in searchProductData" ng-bind="productSearch.name">产品1</option>
+                        </select>
+                        </li>
+                        <li>
+                            零件名称：<select ng-model="search.partId">
+                            <option ></option>
+                            <option value="{{partsSearch.id}}" ng-repeat="partsSearch in searchPartsData" ng-bind="partsSearch.name"></option>
+                        </select>
+                        </li>
+                        <li>
+                            审批状态：<select ng-model="search.approveStatus">
+                            <option></option>
+                            <option value="21">未审</option>
+                            <option value="22">已审</option>
+                            <option value="23">驳回</option>
+                        </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadApproveList()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" ng-click="search={};"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 search-collapse">
+            <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+                <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                    <a class="btn btn-success" ng-click="batchPass()">
+                        批量通过
+                    </a>
+                    <a class="btn btn-default" ng-click="reloadApproveList()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </a>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>订单编号</th>
+                        <th>产品名称</th>
+                        <th>流水号</th>
+                        <th>图号</th>
+                        <th>零件名称</th>
+                        <th>计划量</th>
+                        <th>单位</th>
+                        <th>是否插单</th>
+                        <th>计划完成时间</th>
+                        <th>审批状态</th>
+                        <th>状态</th>
+                        <th>审批人</th>
+                        <th>审批时间</th>
+                        <th>外协工序审批</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="approval in approvalList">
+                        <td><input ng-if="approval.approveStatusStr=='未审'||approval.approveStatusStr=='驳回'" type="checkbox" ng-click="updateApprovalSelection($event,approval.id)"></td>
+                        <td ng-bind="approval.orderNum"></td>
+                        <td ng-bind="approval.productName"></td>
+                        <td ng-bind="approval.runningNum"></td>
+                        <td ng-bind="approval.drawingNum"></td>
+                        <td ng-bind="approval.partName"></td>
+                        <td ng-bind="approval.num"></td>
+                        <td ng-bind="approval.unit"></td>
+                        <td ng-bind="approval.isInsertStr"></td>
+                        <td ng-bind="approval.planTime"></td>
+                        <td ng-bind="approval.approveStatusStr"></td>
+                        <td ng-bind="approval.statusStr"></td>
+                        <td ng-bind="approval.approvalPeople"></td>
+                        <td ng-bind="approval.approvalTime"></td>
+                        <td>
+                            <button class="btn btn-primary btn-xs" data-target="#viewProcess" data-toggle="modal" ng-click="updateCurrentApproval(approval)">查看</button>
+                        </td>
+                        <td>
+                            <button ng-if="approval.approveStatusStr=='未审'||approval.approveStatusStr=='驳回'" class="btn btn-success btn-xs" ng-click="pass(approval.id)">通过</button>
+                            <button ng-if="(approval.approveStatusStr=='已审'||approval.approveStatusStr=='未审')&&approval.statusStr=='未开始'" class="btn btn-danger btn-xs" ng-click="back(approval.id)">驳回</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="produceApprovalPagination"></tm-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- container end -->
+
+
+
+
+<!-- 工序查看模态框 开始 -->
+<div class="modal fade" id="viewProcess" tabindex="-1" role="dialog" aria-labelledby="viewProcess" aria-hidden="true">
+    <div class="modal-dialog" style="width: 85%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">工序查看</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"  width="800px">
+                    <tr>
+                        <td>零件名称</td>
+                        <td><a href="#" ng-bind="currentApproval.partName"></a></td>
+                    </tr>
+                </table>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>工序号</th>
+                        <th>工序</th>
+                        <th>加工方式</th>
+                        <th>外协单位</th>
+                        <th>零件图号</th>
+                        <th>外转时间</th>
+                        <th>计划时间</th>
+                        <th>加工天数</th>
+                        <th>入库时间</th>
+                        <th>完成时间</th>
+                        <th>单价</th>
+                        <th>备注</th>
+                        <th>审核状态</th>
+                        <th>状态</th>
+                        <th ng-if="currentApproval.approveStatusStr=='已审'">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="process in processList">
+                        <td ng-bind="$index"></td>
+                        <td ng-bind="process.processName"></td>
+                        <td ng-bind="process.way"></td>
+                        <td ng-bind="process.outName"></td>
+                        <td ng-bind="process.drawingNum"></td>
+                        <td ng-bind="process.outTime"></td>
+                        <td ng-bind="process.planTime"></td>
+                        <td><a href="#" ng-bind="process.day"></a><a ng-if="process.day!=null">天</a></td>
+                        <td ng-bind="process.inTime"></td>
+                        <td ng-bind="process.actualTime"></td>
+                        <td ng-bind="process.price"></td>
+                        <td ng-bind="process.remarks"></td>
+                        <td ng-bind="process.approveStatusStr"></td>
+                        <td ng-bind="process.statusStr"></td>
+                        <td ng-if="currentApproval.approveStatusStr=='已审'">
+                            <button ng-if="process.approveStatusStr=='未审' && (process.way != '自加工')" class="btn btn-success btn-xs" ng-click="passProcess(process.id)">通过</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="currentParts={};">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 工序查看模态框 结束 -->
+
+
+
+
+
+
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../pagination/pagination.js"></script>
+<script src="../../js/angularjs/app_pagination.js"></script>
+<script src="../../js/angularjs/service/system/produce/ProduceApprovalService.js"></script>
+<script src="../../js/angularjs/service/system/produce/ProducePlanService.js"></script>
+<script src="../../js/angularjs/controller/system/produce/ProduceApprovalController.js"></script>
+</body>
+</html>

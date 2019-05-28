@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.out.MProductPartRepertoryMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.out.MProductPartRepertory" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_product_part_id" property="orderProductPartId" jdbcType="BIGINT" />
+    <result column="part_id" property="partId" jdbcType="BIGINT" />
+    <result column="cinvcode" property="cinvcode" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="re_time" property="reTime" jdbcType="VARCHAR" />
+    <result column="in_time" property="inTime" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="mode_id" property="modeId" jdbcType="BIGINT" />
+    <result column="part_process_id" property="partProcessId" jdbcType="BIGINT" />
+    <result column="out_id" property="outId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_product_part_id, part_id, cinvcode, num, price, re_time, in_time, status, 
+    mode_id, part_process_id, out_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartRepertoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_product_part_repertory
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_product_part_repertory
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_product_part_repertory
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartRepertoryExample" >
+    delete from m_product_part_repertory
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartRepertory" >
+    insert into m_product_part_repertory (id, order_product_part_id, part_id, 
+      cinvcode, num, price, 
+      re_time, in_time, status, 
+      mode_id, part_process_id, out_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderProductPartId,jdbcType=BIGINT}, #{partId,jdbcType=BIGINT}, 
+      #{cinvcode,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+      #{reTime,jdbcType=VARCHAR}, #{inTime,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{modeId,jdbcType=BIGINT}, #{partProcessId,jdbcType=BIGINT}, #{outId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartRepertory" >
+    insert into m_product_part_repertory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderProductPartId != null" >
+        order_product_part_id,
+      </if>
+      <if test="partId != null" >
+        part_id,
+      </if>
+      <if test="cinvcode != null" >
+        cinvcode,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="reTime != null" >
+        re_time,
+      </if>
+      <if test="inTime != null" >
+        in_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="modeId != null" >
+        mode_id,
+      </if>
+      <if test="partProcessId != null" >
+        part_process_id,
+      </if>
+      <if test="outId != null" >
+        out_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderProductPartId != null" >
+        #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="partId != null" >
+        #{partId,jdbcType=BIGINT},
+      </if>
+      <if test="cinvcode != null" >
+        #{cinvcode,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="reTime != null" >
+        #{reTime,jdbcType=VARCHAR},
+      </if>
+      <if test="inTime != null" >
+        #{inTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="modeId != null" >
+        #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="partProcessId != null" >
+        #{partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="outId != null" >
+        #{outId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartRepertoryExample" resultType="java.lang.Integer" >
+    select count(*) from m_product_part_repertory
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update m_product_part_repertory
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderProductPartId != null" >
+        order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="record.partId != null" >
+        part_id = #{record.partId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cinvcode != null" >
+        cinvcode = #{record.cinvcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.reTime != null" >
+        re_time = #{record.reTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inTime != null" >
+        in_time = #{record.inTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.modeId != null" >
+        mode_id = #{record.modeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.partProcessId != null" >
+        part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.outId != null" >
+        out_id = #{record.outId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update m_product_part_repertory
+    set id = #{record.id,jdbcType=BIGINT},
+      order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      part_id = #{record.partId,jdbcType=BIGINT},
+      cinvcode = #{record.cinvcode,jdbcType=VARCHAR},
+      num = #{record.num,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DECIMAL},
+      re_time = #{record.reTime,jdbcType=VARCHAR},
+      in_time = #{record.inTime,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      mode_id = #{record.modeId,jdbcType=BIGINT},
+      part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      out_id = #{record.outId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartRepertory" >
+    update m_product_part_repertory
+    <set >
+      <if test="orderProductPartId != null" >
+        order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="partId != null" >
+        part_id = #{partId,jdbcType=BIGINT},
+      </if>
+      <if test="cinvcode != null" >
+        cinvcode = #{cinvcode,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="reTime != null" >
+        re_time = #{reTime,jdbcType=VARCHAR},
+      </if>
+      <if test="inTime != null" >
+        in_time = #{inTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="modeId != null" >
+        mode_id = #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="partProcessId != null" >
+        part_process_id = #{partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="outId != null" >
+        out_id = #{outId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartRepertory" >
+    update m_product_part_repertory
+    set order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      part_id = #{partId,jdbcType=BIGINT},
+      cinvcode = #{cinvcode,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      re_time = #{reTime,jdbcType=VARCHAR},
+      in_time = #{inTime,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      mode_id = #{modeId,jdbcType=BIGINT},
+      part_process_id = #{partProcessId,jdbcType=BIGINT},
+      out_id = #{outId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.produce.MProductPartPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.produce.MProductPartPlan" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="batch" property="batch" jdbcType="VARCHAR" />
+    <result column="running_num" property="runningNum" jdbcType="VARCHAR" />
+    <result column="order_product_part_id" property="orderProductPartId" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="actual_num" property="actualNum" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="mode_id" property="modeId" jdbcType="BIGINT" />
+    <result column="out_id" property="outId" jdbcType="BIGINT" />
+    <result column="plan_time" property="planTime" jdbcType="VARCHAR" />
+    <result column="actual_time" property="actualTime" jdbcType="VARCHAR" />
+    <result column="in_time" property="inTime" jdbcType="VARCHAR" />
+    <result column="is_insert" property="isInsert" jdbcType="INTEGER" />
+    <result column="text" property="text" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="producer" property="producer" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="approve_status" property="approveStatus" jdbcType="INTEGER" />
+    <result column="approve_people" property="approvePeople" jdbcType="VARCHAR" />
+    <result column="approve_time" property="approveTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, batch, running_num, order_product_part_id, num, actual_num, price, mode_id, out_id, 
+    plan_time, actual_time, in_time, is_insert, text, status, producer, create_time, 
+    approve_status, approve_people, approve_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.produce.MProductPartPlanExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_product_part_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_product_part_plan
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_product_part_plan
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.produce.MProductPartPlanExample" >
+    delete from m_product_part_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.produce.MProductPartPlan" >
+    insert into m_product_part_plan (id, batch, running_num, 
+      order_product_part_id, num, actual_num, 
+      price, mode_id, out_id, 
+      plan_time, actual_time, in_time, 
+      is_insert, text, status, 
+      producer, create_time, approve_status, 
+      approve_people, approve_time)
+    values (#{id,jdbcType=BIGINT}, #{batch,jdbcType=VARCHAR}, #{runningNum,jdbcType=VARCHAR}, 
+      #{orderProductPartId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, #{actualNum,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{modeId,jdbcType=BIGINT}, #{outId,jdbcType=BIGINT}, 
+      #{planTime,jdbcType=VARCHAR}, #{actualTime,jdbcType=VARCHAR}, #{inTime,jdbcType=VARCHAR}, 
+      #{isInsert,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{producer,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{approveStatus,jdbcType=INTEGER}, 
+      #{approvePeople,jdbcType=VARCHAR}, #{approveTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.produce.MProductPartPlan" >
+    insert into m_product_part_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="batch != null" >
+        batch,
+      </if>
+      <if test="runningNum != null" >
+        running_num,
+      </if>
+      <if test="orderProductPartId != null" >
+        order_product_part_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="actualNum != null" >
+        actual_num,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="modeId != null" >
+        mode_id,
+      </if>
+      <if test="outId != null" >
+        out_id,
+      </if>
+      <if test="planTime != null" >
+        plan_time,
+      </if>
+      <if test="actualTime != null" >
+        actual_time,
+      </if>
+      <if test="inTime != null" >
+        in_time,
+      </if>
+      <if test="isInsert != null" >
+        is_insert,
+      </if>
+      <if test="text != null" >
+        text,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="producer != null" >
+        producer,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="approveStatus != null" >
+        approve_status,
+      </if>
+      <if test="approvePeople != null" >
+        approve_people,
+      </if>
+      <if test="approveTime != null" >
+        approve_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="batch != null" >
+        #{batch,jdbcType=VARCHAR},
+      </if>
+      <if test="runningNum != null" >
+        #{runningNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderProductPartId != null" >
+        #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="actualNum != null" >
+        #{actualNum,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="modeId != null" >
+        #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="outId != null" >
+        #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="planTime != null" >
+        #{planTime,jdbcType=VARCHAR},
+      </if>
+      <if test="actualTime != null" >
+        #{actualTime,jdbcType=VARCHAR},
+      </if>
+      <if test="inTime != null" >
+        #{inTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isInsert != null" >
+        #{isInsert,jdbcType=INTEGER},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="producer != null" >
+        #{producer,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="approveStatus != null" >
+        #{approveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="approvePeople != null" >
+        #{approvePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null" >
+        #{approveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.produce.MProductPartPlanExample" resultType="java.lang.Integer" >
+    select count(*) from m_product_part_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update m_product_part_plan
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.batch != null" >
+        batch = #{record.batch,jdbcType=VARCHAR},
+      </if>
+      <if test="record.runningNum != null" >
+        running_num = #{record.runningNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderProductPartId != null" >
+        order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.actualNum != null" >
+        actual_num = #{record.actualNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.modeId != null" >
+        mode_id = #{record.modeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.outId != null" >
+        out_id = #{record.outId,jdbcType=BIGINT},
+      </if>
+      <if test="record.planTime != null" >
+        plan_time = #{record.planTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actualTime != null" >
+        actual_time = #{record.actualTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inTime != null" >
+        in_time = #{record.inTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isInsert != null" >
+        is_insert = #{record.isInsert,jdbcType=INTEGER},
+      </if>
+      <if test="record.text != null" >
+        text = #{record.text,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.producer != null" >
+        producer = #{record.producer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveStatus != null" >
+        approve_status = #{record.approveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.approvePeople != null" >
+        approve_people = #{record.approvePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveTime != null" >
+        approve_time = #{record.approveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update m_product_part_plan
+    set id = #{record.id,jdbcType=BIGINT},
+      batch = #{record.batch,jdbcType=VARCHAR},
+      running_num = #{record.runningNum,jdbcType=VARCHAR},
+      order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      num = #{record.num,jdbcType=INTEGER},
+      actual_num = #{record.actualNum,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DECIMAL},
+      mode_id = #{record.modeId,jdbcType=BIGINT},
+      out_id = #{record.outId,jdbcType=BIGINT},
+      plan_time = #{record.planTime,jdbcType=VARCHAR},
+      actual_time = #{record.actualTime,jdbcType=VARCHAR},
+      in_time = #{record.inTime,jdbcType=VARCHAR},
+      is_insert = #{record.isInsert,jdbcType=INTEGER},
+      text = #{record.text,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      producer = #{record.producer,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=VARCHAR},
+      approve_status = #{record.approveStatus,jdbcType=INTEGER},
+      approve_people = #{record.approvePeople,jdbcType=VARCHAR},
+      approve_time = #{record.approveTime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcpms.mcpms.system.pojo.produce.MProductPartPlan" >
+    update m_product_part_plan
+    <set >
+      <if test="batch != null" >
+        batch = #{batch,jdbcType=VARCHAR},
+      </if>
+      <if test="runningNum != null" >
+        running_num = #{runningNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderProductPartId != null" >
+        order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="actualNum != null" >
+        actual_num = #{actualNum,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="modeId != null" >
+        mode_id = #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="outId != null" >
+        out_id = #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="planTime != null" >
+        plan_time = #{planTime,jdbcType=VARCHAR},
+      </if>
+      <if test="actualTime != null" >
+        actual_time = #{actualTime,jdbcType=VARCHAR},
+      </if>
+      <if test="inTime != null" >
+        in_time = #{inTime,jdbcType=VARCHAR},
+      </if>
+      <if test="isInsert != null" >
+        is_insert = #{isInsert,jdbcType=INTEGER},
+      </if>
+      <if test="text != null" >
+        text = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="producer != null" >
+        producer = #{producer,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="approveStatus != null" >
+        approve_status = #{approveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="approvePeople != null" >
+        approve_people = #{approvePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null" >
+        approve_time = #{approveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcpms.mcpms.system.pojo.produce.MProductPartPlan" >
+    update m_product_part_plan
+    set batch = #{batch,jdbcType=VARCHAR},
+      running_num = #{runningNum,jdbcType=VARCHAR},
+      order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      num = #{num,jdbcType=INTEGER},
+      actual_num = #{actualNum,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      mode_id = #{modeId,jdbcType=BIGINT},
+      out_id = #{outId,jdbcType=BIGINT},
+      plan_time = #{planTime,jdbcType=VARCHAR},
+      actual_time = #{actualTime,jdbcType=VARCHAR},
+      in_time = #{inTime,jdbcType=VARCHAR},
+      is_insert = #{isInsert,jdbcType=INTEGER},
+      text = #{text,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      producer = #{producer,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      approve_status = #{approveStatus,jdbcType=INTEGER},
+      approve_people = #{approvePeople,jdbcType=VARCHAR},
+      approve_time = #{approveTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

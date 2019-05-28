@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>外协管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+</head>
+<body ng-app="mcpms" ng-controller="BaseOutController">
+
+    <div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form" style="float: right;">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            单位名称：<input type="text" ng-model="search.name"/>
+                        </li>
+                        <li>
+                            联系人：<input type="text" ng-model="search.person"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadOutsList()"><i class="fa fa-search" ></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" ng-click="search={};"><i class="fa fa-refresh" ></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+            <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                <a class="btn btn-success" data-toggle="modal" data-target="#editOut">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-default" ng-click="reloadOutsList()">
+                    <i class="fa fa-refresh"></i> 刷新
+                </a>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>单位名称</th>
+                    <th>联系人</th>
+                    <th>联系电话</th>
+                    <th>地址</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="out in outList">
+                    <td ng-bind="out.name"></td>
+                    <td ng-bind="out.person"></td>
+                    <td ng-bind="out.tel"></td>
+                    <td ng-bind="out.address"></td>
+                    <td>
+                        <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editOut" ng-click="findOne(out.id)">修改信息</button>
+                        <button class="btn btn-danger btn-xs" ng-click="outDelete(out.id)">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <tm-pagination conf="outPaginationConf"></tm-pagination>
+        </div>
+    </div>
+</div>
+
+
+    <!-- 外协单位编辑模态框 开始 -->
+    <div class="modal fade" id="editOut" tabindex="-1" role="dialog" aria-labelledby="editOut" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="">外协单位编辑</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="layui-form layui-form-pane1" action="" lay-filter="first">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">单位名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" ng-model="out.name" placeholder="单位名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">联系人</label>
+                            <div class="layui-input-block">
+                                <input type="text" ng-model="out.person" placeholder="联系人" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">联系电话</label>
+                            <div class="layui-input-block">
+                                <input type="text" ng-model="out.tel" placeholder="联系电话" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">地址</label>
+                            <div class="layui-input-block">
+                                <input type="text" ng-model="out.address" placeholder="地址" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="out={};">关闭</button>
+                    <button type="button" class="layui-btn" ng-click="outSave()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 外协单位编辑模态框 结束 -->
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/jquery-ui-1.10.4.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../pagination/pagination.js"></script>
+<script src="../../js/angularjs/app_pagination.js"></script>
+<script src="../../js/angularjs/service/system/base/BaseOutService.js"></script>
+<script src="../../js/angularjs/controller/system/base/BaseOutController.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#editOut').draggable()
+    })
+</script>
+
+</body>
+</html>

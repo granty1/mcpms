@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>提醒设置</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+</head>
+<body ng-app="mcpms" ng-controller="BaseWarningController" ng-init="initDays()">
+
+
+
+<div class="container" style="padding: 100px">
+    <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+    <form class="layui-form layui-form-pane1" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">外协预警天数</label>
+            <div class="layui-input-block">
+                <input type="number"  ng-model="dataObj.planDays" placeholder="外协预警天数"  class="layui-input">
+            </div>
+        </div>
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">工序外协预警天数</label>
+            <div class="layui-input-block">
+                <input type="number"  ng-model="dataObj.processDays" placeholder="工序外协预警天数" class="layui-input">
+            </div>
+        </div>-->
+    </form>
+    <div class="row" style="padding: 50px">
+        <div class="col-md-6 col-md-push-5" >
+            <button class="btn btn-primary" ng-click="save()">保存</button>
+        </div>
+    </div>
+    </div>
+</div>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../js/angularjs/app.js"></script>
+<script src="../../js/angularjs/service/system/base/BaseWarningService.js"></script>
+<script src="../../js/angularjs/controller/system/base/BaseWarningController.js"></script>
+</body>
+</html>

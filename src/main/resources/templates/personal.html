@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人资料</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="layer/layui.css" rel="stylesheet">
+    <link href="css/secondmodal.css" rel="stylesheet">
+    <style type="text/css">
+        #secondmodal {
+            width: 25%;
+            height: 26%;
+        }
+        #editProfile{
+            width: 25%;
+            height: fit-content;
+        }
+        #editPass{
+            width: 25%;
+            height: fit-content;
+        }
+    </style>
+</head>
+<body ng-app="mcpms" ng-controller="profileController" ng-init="getUser()">
+
+<div class="col-sm-8">
+    <div class="ibox float-e-margins">
+        <div class="wrapper wrapper-content">
+            <div class="row animated fadeInRight">
+                <div class="col-sm-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>个人信息</h5>
+                            <div class="ibox-tools">
+
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="#" data-toggle="modal" data-target="#editProfile">修改信息</a></li>
+                                    <li><a href="#" data-toggle="modal" data-target="#editPass">修改密码</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="contact-box">
+                            <div class="col-sm-4">
+                                <div class="text-center">
+                                    <img alt="image" class="img-circle m-t-xs img-responsive" src="{{head}}">
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <h3><strong><a ng-bind="user.username"></a></strong></h3><hr>
+                                <p><i class="fa fa-user"></i>&nbsp;<a ng-bind="user.name"></a></p><hr>
+                                <p><i class="fa fa-group"></i>&nbsp;<a ng-bind="user.role"></a></p><hr>
+                                <p><i class="fa fa-calendar"></i>&nbsp;<a ng-bind="user.time"></a></p>
+                            </div>
+                            <div class="clearfix"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 个人信息修改 开始 -->
+<div id="editProfile" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">个人信息编辑</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table ">
+            <tr>
+                <td>用户名</td>
+                <td><input  type="text" placeholder="用户名" class="form-control" ng-model="editUser.username"/></td>
+            </tr>
+            <tr>
+                <td>姓名</td>
+                <td><input  type="text" placeholder="姓名" class="form-control" ng-model="editUser.name"/></td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="getUser()">关闭</button>
+        <button type="button" class="layui-btn" ng-click="saveInfo()">保存</button>
+    </div>
+</div>
+<!-- 个人信息修改 结束 -->
+
+
+
+<!-- 修改密码 开始 -->
+<div id="editPass" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">修改密码</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table ">
+            <tr>
+                <td>旧密码</td>
+                <td><input  type="password" placeholder="旧密码" class="form-control" ng-model="pass.oldPass"/></td>
+            </tr>
+            <tr>
+                <td>新密码</td>
+                <td><input  type="password" placeholder="新密码" class="form-control" ng-model="pass.newPass"/></td>
+            </tr>
+            <tr>
+                <td>确认新密码</td>
+                <td><input  type="password" placeholder="确认新密码" class="form-control" ng-model="pass.configPass"/></td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="pass={}">关闭</button>
+        <button type="button" class="layui-btn" ng-click="savePass()">保存</button>
+    </div>
+</div>
+<!-- 修改密码 结束 -->
+
+
+
+
+
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="js/angularjs/angular.min.js"></script>
+<script src="js/hplus.min.js?v=4.1.0"></script>
+<script src="layer/layer.js"></script>
+<script src="layer/layui.js"></script>
+<script type="text/javascript" src="js/contabs.min.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+<script src="js/angularjs/app.js"></script>
+
+    <script>
+        app.controller('profileController',function ($scope, $http) {
+
+
+            $scope.pass = {}
+
+            $scope.getUser = function () {
+                $http.get('../current').success((response)=>{
+                    if(response.code==200){
+                        $scope.user = response.data
+                        if($scope.user.role=="ROLE_MANAGER_SYSTEM"){
+                            $scope.user.role = '系统管理员'
+                            $scope.head = 'img/head_ico_1.jpg'
+                        }else if($scope.user.role=="ROLE_MANAGER_OUTSOURCE"){
+                            $scope.user.role = '外协管理员'
+                            $scope.head = 'img/head_ico_2.jpg'
+                        }else if($scope.user.role=="ROLE_MANAGER_STATISTICS"){
+                            $scope.user.role = '统计管理员'
+                            $scope.head = 'img/head_ico_3.jpg'
+                        }else if($scope.user.role=="ROLE_PRODUCTION_DIRECTOR"){
+                            $scope.user.role = '生产厂长'
+                            $scope.head = 'img/head_ico_4.jpg'
+                        }
+                        $scope.editUser = $scope.user
+                    }else {
+                        requestError(response.msg)
+                    }
+                }).error((e)=>{
+                    systemError()
+                })
+            }
+
+
+            $scope.saveInfo = function () {
+                $http.put('../profile/saveInfo',$scope.editUser).success((response)=>{
+                    if (response.code == 200){
+                        $scope.getUser()
+                        successMessage('保存成功!')
+                    } else{
+                        requestError(response.msg)
+                    }
+                }).error((e)=>{systemError()})
+            }
+
+            $scope.savePass = function () {
+                if($scope.pass.oldPass==null||$scope.pass.newPass==null||$scope.pass.configPass==null){
+                    infoMessage('请输入完整')
+                }else{
+                    if($scope.pass.newPass!=$scope.pass.configPass){
+                        infoMessage('两次密码不一致')
+                    }else{
+                        $http.post('../profile/savePass',$scope.pass).success((response)=>{
+                            if (response.code == 200){
+                                layer.confirm('修改成功，登录信息已失效，将返回重新登录', {
+                                    btn: ['确定','取消'] //按钮
+                                }, function(){
+                                    location.href = '../login'
+                                })
+                            } else{
+                                requestError(response.msg)
+                            }
+                        }).error((e)=>{systemError()})
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

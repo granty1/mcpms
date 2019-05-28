@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.out.MWarningMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.out.MWarning" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="expediting_time" property="expeditingTime" jdbcType="VARCHAR" />
+    <result column="expediting_num" property="expeditingNum" jdbcType="INTEGER" />
+    <result column="order_product_part_id" property="orderProductPartId" jdbcType="BIGINT" />
+    <result column="day" property="day" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, type, expediting_time, expediting_num, order_product_part_id, day
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.out.MWarningExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_warning
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_warning
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_warning
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.out.MWarningExample" >
+    delete from m_warning
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.out.MWarning" >
+    insert into m_warning (id, type, expediting_time, 
+      expediting_num, order_product_part_id, day
+      )
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{expeditingTime,jdbcType=VARCHAR}, 
+      #{expeditingNum,jdbcType=INTEGER}, #{orderProductPartId,jdbcType=BIGINT}, #{day,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.out.MWarning" >
+    insert into m_warning
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="expeditingTime != null" >
+        expediting_time,
+      </if>
+      <if test="expeditingNum != null" >
+        expediting_num,
+      </if>
+      <if test="orderProductPartId != null" >
+        order_product_part_id,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="expeditingTime != null" >
+        #{expeditingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="expeditingNum != null" >
+        #{expeditingNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderProductPartId != null" >
+        #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.out.MWarningExample" resultType="java.lang.Integer" >
+    select count(*) from m_warning
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update m_warning
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.expeditingTime != null" >
+        expediting_time = #{record.expeditingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expeditingNum != null" >
+        expediting_num = #{record.expeditingNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderProductPartId != null" >
+        order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="record.day != null" >
+        day = #{record.day,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update m_warning
+    set id = #{record.id,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=INTEGER},
+      expediting_time = #{record.expeditingTime,jdbcType=VARCHAR},
+      expediting_num = #{record.expeditingNum,jdbcType=INTEGER},
+      order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      day = #{record.day,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcpms.mcpms.system.pojo.out.MWarning" >
+    update m_warning
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="expeditingTime != null" >
+        expediting_time = #{expeditingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="expeditingNum != null" >
+        expediting_num = #{expeditingNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderProductPartId != null" >
+        order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcpms.mcpms.system.pojo.out.MWarning" >
+    update m_warning
+    set type = #{type,jdbcType=INTEGER},
+      expediting_time = #{expeditingTime,jdbcType=VARCHAR},
+      expediting_num = #{expeditingNum,jdbcType=INTEGER},
+      order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      day = #{day,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

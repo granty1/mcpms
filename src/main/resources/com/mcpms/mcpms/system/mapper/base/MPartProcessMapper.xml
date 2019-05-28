@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.base.MPartProcessMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.base.MPartProcess" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="parts_id" property="partsId" jdbcType="BIGINT" />
+    <result column="process_id" property="processId" jdbcType="BIGINT" />
+    <result column="mode_id" property="modeId" jdbcType="BIGINT" />
+    <result column="day" property="day" jdbcType="INTEGER" />
+    <result column="drawing_num" property="drawingNum" jdbcType="VARCHAR" />
+    <result column="out_id" property="outId" jdbcType="BIGINT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, parts_id, process_id, mode_id, day, drawing_num, out_id, price, remarks
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.base.MPartProcessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_part_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_part_process
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_part_process
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.base.MPartProcessExample" >
+    delete from m_part_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.base.MPartProcess" >
+    insert into m_part_process (id, parts_id, process_id, 
+      mode_id, day, drawing_num, 
+      out_id, price, remarks
+      )
+    values (#{id,jdbcType=BIGINT}, #{partsId,jdbcType=BIGINT}, #{processId,jdbcType=BIGINT}, 
+      #{modeId,jdbcType=BIGINT}, #{day,jdbcType=INTEGER}, #{drawingNum,jdbcType=VARCHAR}, 
+      #{outId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.base.MPartProcess" >
+    insert into m_part_process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="partsId != null" >
+        parts_id,
+      </if>
+      <if test="processId != null" >
+        process_id,
+      </if>
+      <if test="modeId != null" >
+        mode_id,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="drawingNum != null" >
+        drawing_num,
+      </if>
+      <if test="outId != null" >
+        out_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="partsId != null" >
+        #{partsId,jdbcType=BIGINT},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=BIGINT},
+      </if>
+      <if test="modeId != null" >
+        #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=INTEGER},
+      </if>
+      <if test="drawingNum != null" >
+        #{drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="outId != null" >
+        #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.base.MPartProcessExample" resultType="java.lang.Integer" >
+    select count(*) from m_part_process
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update m_part_process
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.partsId != null" >
+        parts_id = #{record.partsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.processId != null" >
+        process_id = #{record.processId,jdbcType=BIGINT},
+      </if>
+      <if test="record.modeId != null" >
+        mode_id = #{record.modeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.day != null" >
+        day = #{record.day,jdbcType=INTEGER},
+      </if>
+      <if test="record.drawingNum != null" >
+        drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outId != null" >
+        out_id = #{record.outId,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update m_part_process
+    set id = #{record.id,jdbcType=BIGINT},
+      parts_id = #{record.partsId,jdbcType=BIGINT},
+      process_id = #{record.processId,jdbcType=BIGINT},
+      mode_id = #{record.modeId,jdbcType=BIGINT},
+      day = #{record.day,jdbcType=INTEGER},
+      drawing_num = #{record.drawingNum,jdbcType=VARCHAR},
+      out_id = #{record.outId,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DECIMAL},
+      remarks = #{record.remarks,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcpms.mcpms.system.pojo.base.MPartProcess" >
+    update m_part_process
+    <set >
+      <if test="partsId != null" >
+        parts_id = #{partsId,jdbcType=BIGINT},
+      </if>
+      <if test="processId != null" >
+        process_id = #{processId,jdbcType=BIGINT},
+      </if>
+      <if test="modeId != null" >
+        mode_id = #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=INTEGER},
+      </if>
+      <if test="drawingNum != null" >
+        drawing_num = #{drawingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="outId != null" >
+        out_id = #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcpms.mcpms.system.pojo.base.MPartProcess" >
+    update m_part_process
+    set parts_id = #{partsId,jdbcType=BIGINT},
+      process_id = #{processId,jdbcType=BIGINT},
+      mode_id = #{modeId,jdbcType=BIGINT},
+      day = #{day,jdbcType=INTEGER},
+      drawing_num = #{drawingNum,jdbcType=VARCHAR},
+      out_id = #{outId,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

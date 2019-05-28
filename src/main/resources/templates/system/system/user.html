@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../pagination/pagination.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+    <link href="../../css/secondmodal.css" rel="stylesheet">
+    <style>
+        #editUser{
+            width: 30%;
+            height: fit-content;
+        }
+    </style>
+</head>
+<body ng-app="mcpms" ng-controller="SystemUserController">
+
+
+
+<!-- container start -->
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="role-form" style="float: right;">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            用户名：<input type="text" ng-model="search.username"/>
+                        </li>
+                        <li>
+                            姓名：<input type="text" ng-model="search.name"/>
+                        </li>
+                        <li>
+                            角色：<select ng-model="search.role" >
+                                    <option></option>
+                                    <option value="ROLE_MANAGER_SYSTEM">系统管理员</option>
+                                    <option value="ROLE_MANAGER_OUTSOURCE">外协管理员</option>
+                                    <option value="ROLE_MANAGER_STATISTICS">统计管理员</option>
+                                    <option value="ROLE_PRODUCTION_DIRECTOR">生产厂长</option>
+                                 </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" ng-click="reloadUserList()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" ng-click="search={};"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 search-collapse">
+            <div class="col-sm-12 select-table table-responsive" style="width: 100%;">
+                <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#editUser">
+                        添加用户
+                    </a>
+                    <a class="btn btn-default" ng-click="reloadUserList()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </a>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>姓名</th>
+                        <th>最近登录时间</th>
+                        <th>角色</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in userList">
+                        <td ng-bind="user.username"></td>
+                        <td ng-bind="user.name"></td>
+                        <td ng-bind="user.time"></td>
+                        <td ng-bind="user.rolename"></td>
+                        <td>
+                            <button  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editUser" ng-click="findone(user.id)">修改信息</button>
+                            <button  class="btn btn-danger btn-xs"  ng-click="delpass(user.id)">重置密码</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <tm-pagination conf="userPagination"></tm-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- container end -->
+
+
+<!-- 用户编辑 开始 -->
+<div id="editUser" class="modal container fade secondmodal" tabindex="-1" style="display: none;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">用户编辑</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table ">
+            <tr>
+                <td>用户名</td>
+                <td><input  type="text" placeholder="用户名" class="form-control" ng-model="user.username"/></td>
+            </tr>
+            <tr>
+                <td>姓名</td>
+                <td><input  type="text" placeholder="姓名" class="form-control" ng-model="user.name"/></td>
+            </tr>
+            <tr>
+                <td>角色</td>
+                <td>
+                    <select ng-model="user.role" class="form-control">
+                        <option></option>
+                        <option value="ROLE_MANAGER_SYSTEM">系统管理员</option>
+                        <option value="ROLE_MANAGER_OUTSOURCE">外协管理员</option>
+                        <option value="ROLE_MANAGER_STATISTICS">统计管理员</option>
+                        <option value="ROLE_PRODUCTION_DIRECTOR">生产厂长</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="user={}">关闭</button>
+        <button type="button" class="layui-btn" ng-click="saveInfo()">保存</button>
+    </div>
+</div>
+<!-- 用户编辑 结束 -->
+
+
+
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../pagination/pagination.js"></script>
+<script src="../../js/angularjs/app_pagination.js"></script>
+<script src="../../js/angularjs/service/system/system/SystemUserService.js"></script>
+<script src="../../js/angularjs/controller/system/system/SystemUserController.js"></script>
+
+</body>
+</html>

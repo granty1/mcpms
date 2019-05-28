@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工序管理</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="../../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../../css/plugins/ruoyi/ry-ui.css" rel="stylesheet">
+    <link href="../../layer/layui.css" rel="stylesheet">
+</head>
+<body ng-app="mcpms" ng-controller="BaseProcessController" ng-init="getAllProcess()">
+<div class="container-div">
+    <div class="row">
+
+
+        <div class="col-sm-12 select-table table-responsive" style="width: 100%;margin-top: 3%">
+            <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                <a class="btn btn-success" data-toggle="modal" data-target="#editProcess">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
+                <a class="btn btn-danger btn-del" ng-click="batchDelete()">
+                    <i class="fa fa-remove"></i> 批量删除
+                </a>
+                <a class="btn btn-default" ng-click="getAllProcess()">
+                    <i class="fa fa-refresh"></i> 刷新
+                </a>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>工序名称</th>
+                    <th>显示序号</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="process in processList">
+                    <td><input type="checkbox" ng-click="processUpdateSelection($event,process.id)"></td>
+                    <td ng-bind="process.name"></td>
+                    <td><a ng-bind="process.sort"></a></td>
+                    <td>
+                        <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editProcess" ng-click="findone(process.id)">修改</button>
+                        <button class="btn btn-danger btn-xs" ng-click="delete(process.id)">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 工序编辑模态框 开始 -->
+<div class="modal fade" id="editProcess" tabindex="-1" role="dialog" aria-labelledby="editProcess" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="">工序编辑</h4>
+            </div>
+            <div class="modal-body">
+                <form class="layui-form layui-form-pane1" action="" lay-filter="first">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">工序名称</label>
+                        <div class="layui-input-block">
+                            <input type="text"  ng-model="process.name" placeholder="工序名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">显示序号</label>
+                        <div class="layui-input-block">
+                            <input type="number"  ng-model="process.sort" placeholder="显示序号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="layui-btn layui-btn-primary" data-dismiss="modal" ng-click="process={};">关闭</button>
+                <button type="button" class="layui-btn" ng-click="processSave()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 工序编辑模态框 结束 -->
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/jquery-ui-1.10.4.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../layer/layer.js"></script>
+<script src="../../layer/layui.js"></script>
+<script src="../../js/angularjs/angular.min.js"></script>
+<script src="../../js/angularjs/app.js"></script>
+<script src="../../js/angularjs/service/system/base/BaseProcessService.js"></script>
+<script src="../../js/angularjs/controller/system/base/BaseProcessController.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#editProcess').draggable()
+    })
+</script>
+</body>
+</html>

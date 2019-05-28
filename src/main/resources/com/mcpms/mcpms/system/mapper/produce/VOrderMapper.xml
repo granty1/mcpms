@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.produce.VOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.produce.VOrder" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="linkman" property="linkman" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="sign_time" property="signTime" jdbcType="VARCHAR" />
+    <result column="deliver_time" property="deliverTime" jdbcType="VARCHAR" />
+    <result column="deliver_address" property="deliverAddress" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="status_name" property="statusName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_num, name, address, linkman, tel, sign_time, deliver_time, deliver_address, 
+    price, remarks, status_name, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderExample" >
+    delete from v_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrder" >
+    insert into v_order (id, order_num, name, 
+      address, linkman, tel, 
+      sign_time, deliver_time, deliver_address, 
+      price, remarks, status_name, 
+      status)
+    values (#{id,jdbcType=BIGINT}, #{orderNum,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{linkman,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{signTime,jdbcType=VARCHAR}, #{deliverTime,jdbcType=VARCHAR}, #{deliverAddress,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{remarks,jdbcType=VARCHAR}, #{statusName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrder" >
+    insert into v_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="linkman != null" >
+        linkman,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="signTime != null" >
+        sign_time,
+      </if>
+      <if test="deliverTime != null" >
+        deliver_time,
+      </if>
+      <if test="deliverAddress != null" >
+        deliver_address,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="statusName != null" >
+        status_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null" >
+        #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null" >
+        #{signTime,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverTime != null" >
+        #{deliverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverAddress != null" >
+        #{deliverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="statusName != null" >
+        #{statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.produce.VOrderExample" resultType="java.lang.Integer" >
+    select count(*) from v_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update v_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linkman != null" >
+        linkman = #{record.linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+        tel = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signTime != null" >
+        sign_time = #{record.signTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliverTime != null" >
+        deliver_time = #{record.deliverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliverAddress != null" >
+        deliver_address = #{record.deliverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statusName != null" >
+        status_name = #{record.statusName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update v_order
+    set id = #{record.id,jdbcType=BIGINT},
+      order_num = #{record.orderNum,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      linkman = #{record.linkman,jdbcType=VARCHAR},
+      tel = #{record.tel,jdbcType=VARCHAR},
+      sign_time = #{record.signTime,jdbcType=VARCHAR},
+      deliver_time = #{record.deliverTime,jdbcType=VARCHAR},
+      deliver_address = #{record.deliverAddress,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      status_name = #{record.statusName,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

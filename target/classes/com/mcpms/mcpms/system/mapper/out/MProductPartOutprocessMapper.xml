@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcpms.mcpms.system.mapper.out.MProductPartOutprocessMapper" >
+  <resultMap id="BaseResultMap" type="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocess" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_product_part_id" property="orderProductPartId" jdbcType="BIGINT" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="mode_id" property="modeId" jdbcType="BIGINT" />
+    <result column="part_process_id" property="partProcessId" jdbcType="BIGINT" />
+    <result column="out_id" property="outId" jdbcType="BIGINT" />
+    <result column="out_time" property="outTime" jdbcType="VARCHAR" />
+    <result column="deliver_time" property="deliverTime" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="linkman" property="linkman" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_product_part_id, num, price, mode_id, part_process_id, out_id, out_time, 
+    deliver_time, status, address, linkman, tel
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocessExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_product_part_outprocess
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_product_part_outprocess
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_product_part_outprocess
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocessExample" >
+    delete from m_product_part_outprocess
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocess" >
+    insert into m_product_part_outprocess (id, order_product_part_id, num, 
+      price, mode_id, part_process_id, 
+      out_id, out_time, deliver_time, 
+      status, address, linkman, 
+      tel)
+    values (#{id,jdbcType=BIGINT}, #{orderProductPartId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{modeId,jdbcType=BIGINT}, #{partProcessId,jdbcType=BIGINT}, 
+      #{outId,jdbcType=BIGINT}, #{outTime,jdbcType=VARCHAR}, #{deliverTime,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{linkman,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocess" >
+    insert into m_product_part_outprocess
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderProductPartId != null" >
+        order_product_part_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="modeId != null" >
+        mode_id,
+      </if>
+      <if test="partProcessId != null" >
+        part_process_id,
+      </if>
+      <if test="outId != null" >
+        out_id,
+      </if>
+      <if test="outTime != null" >
+        out_time,
+      </if>
+      <if test="deliverTime != null" >
+        deliver_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="linkman != null" >
+        linkman,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderProductPartId != null" >
+        #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="modeId != null" >
+        #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="partProcessId != null" >
+        #{partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="outId != null" >
+        #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="outTime != null" >
+        #{outTime,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverTime != null" >
+        #{deliverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null" >
+        #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocessExample" resultType="java.lang.Integer" >
+    select count(*) from m_product_part_outprocess
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update m_product_part_outprocess
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderProductPartId != null" >
+        order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="record.num != null" >
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.modeId != null" >
+        mode_id = #{record.modeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.partProcessId != null" >
+        part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.outId != null" >
+        out_id = #{record.outId,jdbcType=BIGINT},
+      </if>
+      <if test="record.outTime != null" >
+        out_time = #{record.outTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliverTime != null" >
+        deliver_time = #{record.deliverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linkman != null" >
+        linkman = #{record.linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+        tel = #{record.tel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update m_product_part_outprocess
+    set id = #{record.id,jdbcType=BIGINT},
+      order_product_part_id = #{record.orderProductPartId,jdbcType=BIGINT},
+      num = #{record.num,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DECIMAL},
+      mode_id = #{record.modeId,jdbcType=BIGINT},
+      part_process_id = #{record.partProcessId,jdbcType=BIGINT},
+      out_id = #{record.outId,jdbcType=BIGINT},
+      out_time = #{record.outTime,jdbcType=VARCHAR},
+      deliver_time = #{record.deliverTime,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR},
+      linkman = #{record.linkman,jdbcType=VARCHAR},
+      tel = #{record.tel,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocess" >
+    update m_product_part_outprocess
+    <set >
+      <if test="orderProductPartId != null" >
+        order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="modeId != null" >
+        mode_id = #{modeId,jdbcType=BIGINT},
+      </if>
+      <if test="partProcessId != null" >
+        part_process_id = #{partProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="outId != null" >
+        out_id = #{outId,jdbcType=BIGINT},
+      </if>
+      <if test="outTime != null" >
+        out_time = #{outTime,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverTime != null" >
+        deliver_time = #{deliverTime,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="linkman != null" >
+        linkman = #{linkman,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcpms.mcpms.system.pojo.out.MProductPartOutprocess" >
+    update m_product_part_outprocess
+    set order_product_part_id = #{orderProductPartId,jdbcType=BIGINT},
+      num = #{num,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      mode_id = #{modeId,jdbcType=BIGINT},
+      part_process_id = #{partProcessId,jdbcType=BIGINT},
+      out_id = #{outId,jdbcType=BIGINT},
+      out_time = #{outTime,jdbcType=VARCHAR},
+      deliver_time = #{deliverTime,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      linkman = #{linkman,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

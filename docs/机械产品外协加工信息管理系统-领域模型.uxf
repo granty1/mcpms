@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>378</x>
+      <y>432</y>
+      <w>90</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>零件
+-
+ID
+零件编号
+零件名称
+零件图号
+单位
+备注
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>378</x>
+      <y>639</y>
+      <w>90</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>加工工序
+-
+ID
+工序名称
+显示序号
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>738</x>
+      <y>36</y>
+      <w>144</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>零件生产计划
+-
+ID
+流水号
+零件ID
+数量
+零件单价
+当前工序Id
+计划完成时间
+实际完成时间
+工序计划摘要
+状态
+创建时间
+是否预警
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>675</x>
+      <y>477</y>
+      <w>81</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>549</x>
+      <y>459</y>
+      <w>135</w>
+      <h>207</h>
+    </coordinates>
+    <panel_attributes>零件工序
+-
+ID
+零件ID
+加工工序ID
+加工方式
+加工天数 -&gt; 执行顺序
+工序图号
+外协单位ID
+单价
+备注
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>459</x>
+      <y>522</y>
+      <w>108</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>100.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>459</x>
+      <y>459</y>
+      <w>108</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;100.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>315</y>
+      <w>108</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>外协单位
+-
+ID
+外协单位名称
+地址
+联系人
+联系电话
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>36</y>
+      <w>108</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>加工方式
+-
+ID
+加工方式
+显示序号
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>873</x>
+      <y>63</y>
+      <w>135</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;90.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>873</x>
+      <y>63</y>
+      <w>135</w>
+      <h>468</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;500.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1359</x>
+      <y>189</y>
+      <w>243</w>
+      <h>279</h>
+    </coordinates>
+    <panel_attributes>Note..
+零件外协加工历史中的零件工序,为当前外协零件在外协单位所有工序中的最后一道工序
+
+零件有多个外协单位的,每个外协单位都有对应的记录
+
+同种零件要求送同一家外协单位.
+不同产品的则可送不同外协单位
+
+fg=red
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1296</x>
+      <y>243</y>
+      <w>81</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>873</x>
+      <y>144</y>
+      <w>135</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;130.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>873</x>
+      <y>342</y>
+      <w>135</w>
+      <h>315</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;330.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>594</y>
+      <w>108</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>状态
+-
+ID
+状态类型
+状态值
+状态名称
+显示序号
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>936</x>
+      <y>864</y>
+      <w>288</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>Note..
+状态类型:
+1计划
+    11待审 12执行 13已入库
+2审批
+    21未审 22已审 23驳回
+3外协
+    31待出库 32已出库 33已入库
+4库存
+    41送外协 42报废 43在库 44出库
+    41送外协是指正在外协单位加工,
+      初次外协不用登记,
+      二次外协因为已经入库过,
+      所以标为"送外协"
+    43在库是外协交货,收货后标为在库
+    44出库是指领用安装到产品 
+
+fg=red
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1044</x>
+      <y>747</y>
+      <w>27</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1359</x>
+      <y>504</y>
+      <w>243</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>关于零件报废的处理方式..
+-
+在零件库存中拆分对应记录,只改变"数量"
+在零件生产计划中,拆分对应记录,同样只改变"数量",对应报废数量的记录标为"执行"状态
+
+
+
+fg=red
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1296</x>
+      <y>576</y>
+      <w>81</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>738</x>
+      <y>423</y>
+      <w>144</w>
+      <h>369</h>
+    </coordinates>
+    <panel_attributes>零件计划工序
+-
+ID
+生产计划ID
+零件工序ID
+加工方式ID
+零件图号
+外转时间
+计划完成时间
+实际完成时间
+实际加工天数
+单价
+外协单位ID
+备注
+状态
+执行顺序</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
