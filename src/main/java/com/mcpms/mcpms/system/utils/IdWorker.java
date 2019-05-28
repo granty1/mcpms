@@ -16,7 +16,10 @@ public class IdWorker {
 	 * @return
 	 */
 	public static long getId() {
-		return worker.nextId();
+		long l = worker.nextId();
+		String s1 = String.valueOf(l);
+		String s = s1.substring(4,19);
+		return Long.parseLong(s);
 	}
  
 	private long workerId;
@@ -94,6 +97,12 @@ public class IdWorker {
 	}
  
 	static Map<Long, Long> kvs = Collections.synchronizedMap(new HashMap<Long, Long>());
- 
 
+	public static void main(String[] args) {
+		for (int i = 0; i < 10000000; i++) {
+			System.out.println(getId());
+		}
+		/*String s = "abcde";
+		System.out.println(s.substring(0,2));*/
+	}
 }

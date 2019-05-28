@@ -87,7 +87,6 @@ public class PartPlanServiceImpl implements PartPlanService {
                 NewMPartPlanProcess process = new NewMPartPlanProcess();
                 long id = IdWorker.getId();
                 process.setId(id);
-                System.out.println(id);
                 process.setPartPlanId(planId);
                 process.setPartProcessId(modelProcess.getId());
 
